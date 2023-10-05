@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "BITTAKE | Биткоин Кошелёк",
+    "slug": "BITTAKE",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/app-icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/app-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gsign.BITTAKE"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/app-icon.png"
+      },
+      "package": "com.gsign.BITTAKE"
+    },
+    "web": {
+      "favicon": "./assets/app-icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d6ffc111-9bc0-4912-bc5f-ba4cb111c452"
+      }
+    }
+  }
+}
