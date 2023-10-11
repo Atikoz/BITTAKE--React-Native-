@@ -62,10 +62,14 @@ export function SendCoinScreen({route, navigation}) {
 
   useEffect(() => {
 
+    console.log(maxAmount);
+    console.log(userBalance);
+    console.log(transferComission);
+
     if (transferComission.length === 0) return
     if (coin === coinCommission) setTransferComission(0)
     if(maxAmount > (userBalance - transferComission)) {
-      setInputTrue(false)
+      setInputTrue(false);
     } else {
       setInputTrue(true);
       const currentDate = new Date();
