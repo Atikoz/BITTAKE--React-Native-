@@ -1,27 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, Image, View, TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
 
 import logo from '../assets/logo.png';
 import backgroundImage from '../assets/diagram.png';
 import WhiteRectangle from '../assets/WhiteRectangle.png';
 
-export function StartScreen ({ navigation }) {
+export function StartScreen({ navigation }) {
 
   return (
     <View>
       <View style={stylesStartPage.container}>
-        <Image 
+        <Image
           source={logo}
-          style={stylesStartPage.logo} 
+          style={stylesStartPage.logo}
           resizeMode="contain">
         </Image>
 
-        <Image 
+        <Image
           source={backgroundImage}
           style={stylesStartPage.background} resizeMode="contain">
         </Image>
 
-        <Image 
+        <Image
           source={WhiteRectangle}
           style={stylesStartPage.whiteRectangle} resizeMode="contain">
         </Image>
@@ -31,13 +31,13 @@ export function StartScreen ({ navigation }) {
           <Text style={stylesStartPage.welcomeText}>
             WELCOME{"\n"}TO CRYPTO{"\n"}WALLET</Text>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={stylesStartPage.buttonRegister}
             onPress={() => navigation.navigate("Registration")}>
             <Text style={stylesStartPage.registerButtonText}>CREATE ACCOUNT</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             style={stylesStartPage.buttonLogin}
             onPress={() => navigation.navigate("Login")}>
             <Text style={stylesStartPage.loginButtonText}>LOGIN</Text>
@@ -45,7 +45,7 @@ export function StartScreen ({ navigation }) {
 
         </View>
       </View>
-      
+
     </View>
   );
 };
@@ -74,7 +74,7 @@ const stylesStartPage = StyleSheet.create({
     height: 30,
   },
 
-  whiteRectangle:{
+  whiteRectangle: {
     width: 400,
     height: 400,
     top: 500,
@@ -88,12 +88,12 @@ const stylesStartPage = StyleSheet.create({
     left: 13,
     padding: 10,
   },
-  
+
   welcomeText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 40,
-    fontHeight: 700,
+    // fontHeight: 700,
     lineHeight: 48,
     letterSpacing: 1,
     textAlign: 'left',

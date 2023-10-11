@@ -7,23 +7,23 @@ class InfoUser {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://178.159.39.251:3000/v1/balance/balance',
-      headers: { 
+      url: 'https://inline.dev.na4u.ru/v1/balance/balance',
+      headers: {
         'Authorization': `Bearer ${token}`
       }
     };
 
     return axios.request(config)
-    .then((response) => {
-      if (response.data.status === 'OK') {
-        return response.data.data
-      } else {
-        return []
-      }
-    })
-    .catch((error) => {
-      return console.log(error);
-    });
+      .then((response) => {
+        if (response.data.status === 'OK') {
+          return response.data.data
+        } else {
+          return []
+        }
+      })
+      .catch((error) => {
+        return console.log(error);
+      });
   };
 
   async UpdateInfoUser() {
@@ -48,19 +48,19 @@ class InfoUser {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://178.159.39.251:3000/v1/wallet/walletAddresses',
-      headers: { 
+      url: 'https://inline.dev.na4u.ru/v1/wallet/walletAddresses',
+      headers: {
         'Authorization': `Bearer ${userToken}`
       }
     };
-    
+
     return axios.request(config)
-    .then((response) => {
-      return response.data.data
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => {
+        return response.data.data
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   async getBalanceUser(coin) {
@@ -75,19 +75,19 @@ class InfoUser {
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://178.159.39.251:3000/v1/transaction/find',
-      headers: { 
+      url: 'https://inline.dev.na4u.ru/v1/transaction/find',
+      headers: {
         'Authorization': `Bearer ${token}`
       }
     };
-    
+
     return axios.request(config)
-    .then((response) => {
-      return response.data
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 };
 
