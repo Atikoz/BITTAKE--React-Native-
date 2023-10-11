@@ -97,7 +97,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
         </View>
 
       <View style={style.qrCodeContainer}>
-        <QRCode value={userWallet} size={200} />
+        {/* <QRCode value={userWallet} size={200} /> */}
       </View>
 
       <View style={style.addressContainer}>
@@ -228,7 +228,8 @@ const style = StyleSheet.create({
   },
 
   qrCodeContainer: {
-    flex: 0,
+    height: 200,
+    width: '100%',
     paddingTop: 10,
     alignItems: 'center'
 },

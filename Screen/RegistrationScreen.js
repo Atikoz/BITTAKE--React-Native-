@@ -1,14 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import RegisterFunction from '../function/functionReg.js';
 import BoxWordItem from '../componens/RegisterBoxWordItems';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Platform } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import Checkbox from '../componens/Checkbox';
 
 export function RegistrationScreen ({ navigation }) {
   const [checked, setChecked] = useState(false);
-  const [arrayMnemonic, setArrayMnemonic] = useState([])
+  const [arrayMnemonic, setArrayMnemonic] = useState([]);
   
   useEffect(() => {
     async function fetchData() {
@@ -37,9 +37,12 @@ export function RegistrationScreen ({ navigation }) {
     );
   };
 
+  const OS = Platform.OS;
+
+
   return(
     <View style={style.container}>
-      <View style={style.statusBar} />
+      { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined }
       <View style={style.header}>
         <TouchableOpacity onPress={ () => {navigation.navigate("StartScreen")}}>
           <Image
