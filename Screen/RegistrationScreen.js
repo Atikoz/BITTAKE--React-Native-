@@ -9,6 +9,7 @@ import Checkbox from '../componens/Checkbox';
 export function RegistrationScreen ({ navigation }) {
   const [checked, setChecked] = useState(false);
   const [arrayMnemonic, setArrayMnemonic] = useState([]);
+  const [mnemonicPhrase, setMnemonicPhrase] =useState('');
   
   useEffect(() => {
     async function fetchData() {
@@ -19,7 +20,9 @@ export function RegistrationScreen ({ navigation }) {
     fetchData();
   }, []);
 
-  const mnemonicPhrase = arrayMnemonic.join(' ');
+  useEffect ( () => {
+    setMnemonicPhrase(arrayMnemonic.join(' '))
+  }, [arrayMnemonic]);
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
@@ -77,6 +80,7 @@ export function RegistrationScreen ({ navigation }) {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => {
+          console.log(mnemonicPhrase);
           copyToClipboard(mnemonicPhrase);
           showMyAlert();
           }}

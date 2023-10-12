@@ -44,7 +44,7 @@ export function MainScreen({navigation}) {
 
   return (
     <View style={style.container}>
-      <View style ={style.statusBar}></View>
+      <View style ={style.statusBar} />
       <View style={style.headerBox}>
         <Image
           source={logo}

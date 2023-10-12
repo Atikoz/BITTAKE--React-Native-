@@ -1,19 +1,20 @@
 import axios from 'axios';
 import functionReg from '../function/functionReg';
 import LocalData from '../function/funcionLocalData.js';
+import config from '../config.js';
 
 class InfoUser {
   async GetinfoUser(token) {
-    let config = {
+    let data = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'https://inline.dev.na4u.ru/v1/balance/balance',
+      url: `${config.apiUrl}/v1/balance/balance`,
       headers: {
         'Authorization': `Bearer ${token}`
       }
     };
 
-    return axios.request(config)
+    return axios.request(data)
       .then((response) => {
         if (response.data.status === 'OK') {
           return response.data.data
@@ -45,16 +46,16 @@ class InfoUser {
 
   async getUserWallet() {
     const userToken = await this.getUserToken();
-    let config = {
+    let data = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'https://inline.dev.na4u.ru/v1/wallet/walletAddresses',
+      url: `${config.apiUrl}/v1/wallet/walletAddresses`,
       headers: {
         'Authorization': `Bearer ${userToken}`
       }
     };
 
-    return axios.request(config)
+    return axios.request(data)
       .then((response) => {
         return response.data.data
       })
@@ -72,16 +73,16 @@ class InfoUser {
 
   async getTransactionUser(token) {
 
-    let config = {
+    let data = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'https://inline.dev.na4u.ru/v1/transaction/find',
+      url: `${config.apiUrl}/v1/transaction/find`,
       headers: {
         'Authorization': `Bearer ${token}`
       }
     };
 
-    return axios.request(config)
+    return axios.request(data)
       .then((response) => {
         return response.data
       })

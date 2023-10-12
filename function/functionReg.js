@@ -1,5 +1,7 @@
 import axios from 'axios';
 import base64 from 'react-native-base64';
+import config from '../config.js';
+
 
 class RegisterFunction {
   async decryptString(encryptedText, key) {
@@ -9,7 +11,7 @@ class RegisterFunction {
 
   async fetchMnemonic() {
     try {
-      const mnemonic = (await axios.post('https://inline.dev.na4u.ru/v1/auth/registration')).data.data.mnemonic;
+      const mnemonic = (await axios.post(`${config.apiUrl}/v1/auth/registration`)).data.data.mnemonic;
       console.log(mnemonic);
       return mnemonic.split(' ');
     } catch (error) {
@@ -20,7 +22,7 @@ class RegisterFunction {
   async loginUser(mnemonic) {
     try {
       const encodedMnemonic = base64.encode(`${mnemonic}`);
-      const response = await axios.get(`https://inline.dev.na4u.ru/v1/auth/login?mnemonic=${encodedMnemonic}`);
+      const response = await axios.get(`${config.apiUrl}/v1/auth/login?mnemonic=${encodedMnemonic}`);
       return {
         status: response.data.status,
         token: response.data.data.token,

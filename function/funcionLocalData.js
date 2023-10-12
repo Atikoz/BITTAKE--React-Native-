@@ -11,7 +11,8 @@ class LocalData {
 
   async getUserData(key) {
     try {
-      const userData = await AsyncStorage.getItem(key);
+
+      const userData = await AsyncStorage.getItem(key);;
   
       // Перевірка на null, оскільки AsyncStorage може повертати null, якщо дані не знайдено.
       if (userData !== null) {
@@ -19,7 +20,7 @@ class LocalData {
         return JSON.parse(userData);
       } else {
         // Якщо ключ не знайдено, повертаємо пустий об'єкт або значення за замовчуванням, в залежності від вашого випадку.
-        return {};
+        return 'user not found';
       }
     } catch (error) {
       console.error('Помилка при отриманні даних:', error);
