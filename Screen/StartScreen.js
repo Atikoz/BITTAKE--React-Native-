@@ -73,35 +73,35 @@ export function StartScreen({ navigation }) {
 
   }, []);
 
-  // useEffect( async () => {
-  //   async function checkLocalStorage() {
-  //     const userFind = await getUserData('userMnemonic');
-  //     console.log(userFind);
-  //     if (userFind === 'user not found') {
-  //       return
-  //     } else {
-  //       setMnemonic(userFind.trim());
-  //     }
-  //   }
+  useEffect( () => {
+      const checkLocalStorage = async () => {
+      const userFind = await getUserData('userMnemonic');
+      console.log(userFind);
+      if (userFind === 'user not found') {
+        return
+      } else {
+        setMnemonic(userFind.trim());
+      }
+    }
 
-  //   checkLocalStorage();
-  // }, []);
+    checkLocalStorage();
+  }, []);
 
-  // useEffect( async () => {
-  //   async function checkLogin() {
-  //     const loginSatus = await loginUser(mnemonic);
-  //     console.log(mnemonic);
+  useEffect( () => {
+      const checkLogin = async () => {
+      const loginSatus = await loginUser(mnemonic);
+      console.log(mnemonic);
 
-  //     if (loginSatus.status === 'OK') {
-  //       setUserIsAuthorized(true);
-  //     } else {
-  //       return
-  //     }
-  //   };
+      if (loginSatus.status === 'OK') {
+        setUserIsAuthorized(true);
+      } else {
+        return
+      }
+    };
 
-  //   checkLogin()
+    checkLogin()
 
-  // }, [mnemonic])
+  }, [mnemonic])
 
 
   return (
@@ -167,7 +167,7 @@ export function StartScreen({ navigation }) {
         </View>
       </View> )}
 
-      {userIsAuthorized && console.log(mnemonic) && navigation.navigate("MainScreen")}
+      {userIsAuthorized && navigation.navigate("MainScreen")}
     </View>
 
   )
