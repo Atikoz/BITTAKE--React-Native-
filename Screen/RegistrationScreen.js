@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import RegisterFunction from '../function/functionReg.js';
 import BoxWordItem from '../componens/RegisterBoxWordItems';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Platform } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Platform, ActivityIndicator } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import Checkbox from '../componens/Checkbox';
 
 export function RegistrationScreen ({ navigation }) {
   const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [arrayMnemonic, setArrayMnemonic] = useState([]);
   const [mnemonicPhrase, setMnemonicPhrase] =useState('');
   
@@ -43,63 +44,79 @@ export function RegistrationScreen ({ navigation }) {
   const OS = Platform.OS;
 
 
-  return(
-    <View style={style.container}>
-      { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined }
-      <View style={style.header}>
-        <TouchableOpacity onPress={ () => {navigation.navigate("StartScreen")}}>
-          <Image
-            source={backButton}
-            style={style.backButton} 
-            resizeMode="contain">
-          </Image>
-        </TouchableOpacity>
+  return (
+    
+    <View>
+      {OS === 'ios' ? (<View style={style.statusBar} />) : undefined}
 
-        <View style={style.registerTextContainer}>
-          <Text style={style.registerText}>Mnemonic Generation</Text>
+      {loading && (<View style={style.skreenLoaderContainer}>
+        <View style={style.loaderTextContainer}>
+
+          <View style={style.loaderContainer}>
+            <ActivityIndicator size="large" color="#007aff" />
+          </View>
+
+          <Text style={style.textLoader}>Generete Mnemonic</Text>
         </View>
-      </View >
+      </View>)}
 
-      <View style={style.mnemonicPhrase}>
-        <BoxWordItem array={arrayMnemonic}/>
-      </View>
+      {!loading && (<View style={style.container}>
+        <View style={style.header}>
+          <TouchableOpacity onPress={() => { navigation.navigate("StartScreen") }}>
+            <Image
+              source={backButton}
+              style={style.backButton}
+              resizeMode="contain">
+            </Image>
+          </TouchableOpacity>
 
-      <View style={style.footer}>
-        <TouchableOpacity 
-        onPress={() => {setChecked(!checked)}}
-        style={style.checkOut}>
-          <Text style={style.saveText}>I SAVED THE PHRASE</Text>
-          <View style={{right: 6}}>
-            <Checkbox
-            checked={checked}
-            onChange={setChecked}
-            buttonStyle={style.checkboxBase}
-            activeButtonStyle={style.checkboxChecked}
-            />
+          <View style={style.registerTextContainer}>
+            <Text style={style.registerText}>Mnemonic Generation</Text>
           </View>
-        </TouchableOpacity>
+        </View >
 
-        <TouchableOpacity onPress={() => {
-          console.log(mnemonicPhrase);
-          copyToClipboard(mnemonicPhrase);
-          showMyAlert();
+        <View style={style.mnemonicPhrase}>
+          <BoxWordItem array={arrayMnemonic} />
+        </View>
+
+        <View style={style.footer}>
+          <TouchableOpacity
+            onPress={() => { setChecked(!checked) }}
+            style={style.checkOut}>
+            <Text style={style.saveText}>I SAVED THE PHRASE</Text>
+            <View style={{ right: 6 }}>
+              <Checkbox
+                checked={checked}
+                onChange={setChecked}
+                buttonStyle={style.checkboxBase}
+                activeButtonStyle={style.checkboxChecked}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => {
+            console.log(mnemonicPhrase);
+            copyToClipboard(mnemonicPhrase);
+            showMyAlert();
           }}
-        >
-          <View style={style.buttonCopy}>
-            <Text style={style.copyText}>COPY</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+          >
+            <View style={style.buttonCopy}>
+              <Text style={style.copyText}>COPY</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
 
-      <View style={style.botBox}>
-        <TouchableOpacity onPress={ () => {checked ? navigation.navigate("Login"): undefined}}>
-          <View style={style.buttonNext}>
-            <Text style={style.textNext}>NEXT</Text>
-          </View>
-        </TouchableOpacity>
-        
-      </View>
+        <View style={style.botBox}>
+          <TouchableOpacity onPress={() => { checked ? navigation.navigate("Login") : undefined }}>
+            <View style={style.buttonNext}>
+              <Text style={style.textNext}>NEXT</Text>
+            </View>
+          </TouchableOpacity>
+
+        </View>
+      </View>)}
     </View>
+ 
   )
 };
 
@@ -191,6 +208,7 @@ const style = StyleSheet.create({
     borderColor: 'coral',
     backgroundColor: 'transparent',
   },
+
   checkboxChecked: {
     backgroundColor: '#000000',
   },
@@ -209,7 +227,32 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   textNext: {
     fontWeight:'900'
+  },
+
+  skreenLoaderContainer: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+  },
+
+  loaderContainer: {
+    height: 400,
+    width: '100%',
+    justifyContent: 'flex-end',
+    paddingBottom: 15
+  },
+
+  loaderTextContainer: {
+    height: 'auto',
+    width: 'auto',
+    alignItems: 'center'
+  },
+
+  textLoader:{
+    fontSize: 16,
+    fontWeight: '600'
   }
 });
