@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image, Clipboard } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image, Clipboard, StatusBar, SafeAreaView } from 'react-native';
 
 import successfullIcon from '../assets/succesfull-icon.png';
 import logo from '../assets/black-logo.png'
@@ -13,70 +13,72 @@ export function SuccessfulTransactionScreen ({ route, navigation}) {
   };
 
   return (
-    <View style={style.container}>
-      <View style={style.statusBar} />
-      <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-      <Image 
-        source={logo}
-        style={{ width: 160, height: 30 }} 
-        resizeMode="contain"/>
-      </View>
-
-      <View style={style.successfullContainer}>
+    <SafeAreaView style={{backgroundColor: 'black'}}>
+      <View style={style.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#000000"/>
+        <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
         <Image 
-          source={successfullIcon}
-          style={{ width: 160, height: 200 }} 
+          source={logo}
+          style={{ width: 160, height: 30 }} 
           resizeMode="contain"/>
-      </View>
+        </View>
 
-      <View style={style.hashInfoContainer}>
-        <View style={style.hashInfo}>
-            <View style={{ justifyContent: 'center', }}>
-              <Text style={style.textStyle}>TX Hash:</Text>
-              <Text style={style.textStyle}>{hash}</Text>
+        <View style={style.successfullContainer}>
+          <Image 
+            source={successfullIcon}
+            style={{ width: 160, height: 200 }} 
+            resizeMode="contain"/>
+        </View>
+
+        <View style={style.hashInfoContainer}>
+          <View style={style.hashInfo}>
+              <View style={{ justifyContent: 'center', }}>
+                <Text style={style.textStyle}>TX Hash:</Text>
+                <Text style={style.textStyle}>{hash}</Text>
+              </View>
+
+              <View style={{alignItems: 'flex-end'}}>
+                <TouchableOpacity style={style.copyButton} onPress={ () => {copyToClipboard(hash)}}>
+                  <Text style={{color: 'white', fontWeight: '900'}}>COPY</Text>
+                </TouchableOpacity>
+              </View>
+          </View>
+        </View>
+
+        <View style={style.addressSendContainer}>
+          <View style={style.addressSend}>
+            <Text style={style.textStyle}>Address Send:</Text>
+            <Text style={style.textStyle}>{addressSend}</Text>
+          </View>
+        </View>
+
+        <View style={style.addressSendContainer}>
+          <View style={style.addressSend}>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', height: '50%', alignItems: 'center'}}>
+              <Text style={style.textStyle}>Amount Send:</Text>
+              <Text style={style.textStyle}> {maxAmount} {coin.toUpperCase()}</Text>
             </View>
 
-            <View style={{alignItems: 'flex-end'}}>
-              <TouchableOpacity style={style.copyButton} onPress={ () => {copyToClipboard(hash)}}>
-                <Text style={{color: 'white', fontWeight: '900'}}>COPY</Text>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '50%'}}>
+              <Text style={style.textStyle}>Comission Send:</Text>
+              <Text style={style.textStyle}> {transferComission} {coinCommission.toUpperCase()}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={style.sendCoinContainer}>
+            <View style={style.footerRectangle}>
+              <TouchableOpacity 
+                style={style.homeButton}
+                onPress={async () => {navigation.navigate("MainScreen")}}
+              >
+                <Text style={{ fontSize: 17, fontWeight: '900' }}>OK</Text>
               </TouchableOpacity>
             </View>
-        </View>
-      </View>
-
-      <View style={style.addressSendContainer}>
-        <View style={style.addressSend}>
-          <Text style={style.textStyle}>Address Send:</Text>
-          <Text style={style.textStyle}>{addressSend}</Text>
-        </View>
-      </View>
-
-      <View style={style.addressSendContainer}>
-        <View style={style.addressSend}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', height: '50%', alignItems: 'center'}}>
-            <Text style={style.textStyle}>Amount Send:</Text>
-            <Text style={style.textStyle}> {maxAmount} {coin.toUpperCase()}</Text>
           </View>
 
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '50%'}}>
-            <Text style={style.textStyle}>Comission Send:</Text>
-            <Text style={style.textStyle}> {transferComission} {coinCommission.toUpperCase()}</Text>
-          </View>
-        </View>
       </View>
-
-      <View style={style.sendCoinContainer}>
-          <View style={style.footerRectangle}>
-            <TouchableOpacity 
-              style={style.homeButton}
-              onPress={async () => {navigation.navigate("MainScreen")}}
-            >
-              <Text style={{ fontSize: 17, fontWeight: '900' }}>OK</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-    </View>
+    </SafeAreaView>
   )
 };
 

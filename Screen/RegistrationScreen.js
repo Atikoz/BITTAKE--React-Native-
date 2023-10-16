@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import RegisterFunction from '../function/functionReg.js';
 import BoxWordItem from '../componens/RegisterBoxWordItems';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Platform, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Platform, ActivityIndicator, SafeAreaView, StatusBar } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import Checkbox from '../componens/Checkbox';
@@ -13,16 +13,26 @@ export function RegistrationScreen ({ navigation }) {
   const [mnemonicPhrase, setMnemonicPhrase] =useState('');
   
   useEffect(() => {
+    const turnOffLoader = () => {
+      const timerId = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+
     async function fetchData() {
       const mnemonicArray = await RegisterFunction.fetchMnemonic();
       setArrayMnemonic(mnemonicArray);
+      turnOffLoader();
     };
 
     fetchData();
+
+
   }, []);
 
   useEffect ( () => {
-    setMnemonicPhrase(arrayMnemonic.join(' '))
+    setMnemonicPhrase(arrayMnemonic.join(' '));
   }, [arrayMnemonic]);
 
   const copyToClipboard = (text) => {
@@ -46,14 +56,16 @@ export function RegistrationScreen ({ navigation }) {
 
   return (
     
-    <View>
-      {OS === 'ios' ? (<View style={style.statusBar} />) : undefined}
+    <SafeAreaView style={{backgroundColor: 'white'}}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff"/>
+
+      {/* {OS === 'ios' ? (<View style={style.statusBar} />) : undefined} */}
 
       {loading && (<View style={style.skreenLoaderContainer}>
         <View style={style.loaderTextContainer}>
 
           <View style={style.loaderContainer}>
-            <ActivityIndicator size="large" color="#007aff" />
+            <ActivityIndicator size="large" color="#58FFAF" />
           </View>
 
           <Text style={style.textLoader}>Generete Mnemonic</Text>
@@ -115,7 +127,7 @@ export function RegistrationScreen ({ navigation }) {
 
         </View>
       </View>)}
-    </View>
+    </SafeAreaView>
  
   )
 };

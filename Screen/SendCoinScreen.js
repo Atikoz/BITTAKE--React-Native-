@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import InfoUser from '../function/functionGetInfoUser';
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, StatusBar, SafeAreaView } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import { SendCoin } from '../function/functionTransfer';
@@ -90,123 +90,124 @@ export function SendCoinScreen({route, navigation}) {
  
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={style.container}>
-        <View style={style.statusBar} />
-
-        <View style={style.header}>
-          <View style={style.backButton}>
-            <TouchableOpacity onPress={ () => {navigation.navigate("MainScreen")}}>
-                <Image
-                  source={backButton}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-          </View>
-
-          <View style={style.headerText}>
-            <Text style={{ fontSize: 18, fontWeight: '900' }}>Send {coin.toUpperCase()}</Text>
-          </View>
-        </View>
-
-        <View style={{alignItems: 'center'}}>
-          <View style={style.amountContainer}>
-            <View style={style.topContent}>
-              <View style={{ padding: 8 }}>
-                <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalance} {coin.toUpperCase()}</Text>
-              </View>
-
-              <View style={{ padding: 8 }}>
-                <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalanceUsd}$</Text>
-              </View>
+      <SafeAreaView style={{backgroundColor: 'black'}}>
+        <View style={style.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#000000"/>
+          <View style={style.header}>
+            <View style={style.backButton}>
+              <TouchableOpacity onPress={ () => {navigation.navigate("MainScreen")}}>
+                  <Image
+                    source={backButton}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
             </View>
 
-            <View style={style.topContent}>
-              <View style={{ padding: 8 }}>
-                <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {(priceToUsd * maxAmount).toFixed(3)}$</Text>
-              </View>
+            <View style={style.headerText}>
+              <Text style={{ fontSize: 18, fontWeight: '900' }}>Send {coin.toUpperCase()}</Text>
             </View>
+          </View>
 
-            <View style={style.topContent}>
-              <View style={{ padding: 8 }}>
-                <Text style={{ fontSize: 19, fontWeight: '900' }}>Commision transfer: {transferComission} {coin.toUpperCase()}</Text>
+          <View style={{alignItems: 'center'}}>
+            <View style={style.amountContainer}>
+              <View style={style.topContent}>
+                <View style={{ padding: 8 }}>
+                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalance} {coin.toUpperCase()}</Text>
+                </View>
+
+                <View style={{ padding: 8 }}>
+                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalanceUsd}$</Text>
+                </View>
+              </View>
+
+              <View style={style.topContent}>
+                <View style={{ padding: 8 }}>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {(priceToUsd * maxAmount).toFixed(3)}$</Text>
+                </View>
+              </View>
+
+              <View style={style.topContent}>
+                <View style={{ padding: 8 }}>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Commision transfer: {transferComission} {coin.toUpperCase()}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
 
-        <View style={style.inputContain}>
-          <TextInput
-            style={style.walletInput}
-            placeholder='address'
-            placeholderTextColor='#FFFFFF'
-            multiline={true}
-            onChangeText={ (text) => {
-              setAddressSend(text.trim())
-            }}
-          />
-
-          <View style={{height: 13, width: 'auto', alignItems: 'center'}}>
-            {userWallet === addressSend ? (<Text style={{ color: 'red', fontWeight: '600' }}>You cannot transfer funds to your address!</Text>) : undefined}
-          </View>
-
-          <View style={style.amountInputContainer}>
+          <View style={style.inputContain}>
             <TextInput
-              style={style.amountInput}
-              placeholder='amount'
-              value={maxAmount}
+              style={style.walletInput}
+              placeholder='address'
               placeholderTextColor='#FFFFFF'
-              keyboardType="numeric"
+              multiline={true}
               onChangeText={ (text) => {
-                const cleanetText = text.replace(',', '.');
-                setMaxAmount(cleanetText)
+                setAddressSend(text.trim())
               }}
             />
 
-            <TouchableOpacity 
-              style={{height: 40, width: 40, position: 'absolute', right: 10, justifyContent: 'center'}}
-              onPress={ () => {
-                let sum = null;
-                {userBalance < transferComission ? sum = 0 : sum = userBalance - transferComission}
-                setMaxAmount(sum.toString())}}
-            >
-              <Text style={{color: 'white', fontWeight: '900'}}>MAX</Text>
-            </TouchableOpacity>
+            <View style={{height: 13, width: 'auto', alignItems: 'center'}}>
+              {userWallet === addressSend ? (<Text style={{ color: 'red', fontWeight: '600' }}>You cannot transfer funds to your address!</Text>) : undefined}
+            </View>
+
+            <View style={style.amountInputContainer}>
+              <TextInput
+                style={style.amountInput}
+                placeholder='amount'
+                value={maxAmount}
+                placeholderTextColor='#FFFFFF'
+                keyboardType="numeric"
+                onChangeText={ (text) => {
+                  const cleanetText = text.replace(',', '.');
+                  setMaxAmount(cleanetText)
+                }}
+              />
+
+              <TouchableOpacity 
+                style={{height: 40, width: 40, position: 'absolute', right: 10, justifyContent: 'center'}}
+                onPress={ () => {
+                  let sum = null;
+                  {userBalance < transferComission ? sum = 0 : sum = userBalance - transferComission}
+                  setMaxAmount(sum.toString())}}
+              >
+                <Text style={{color: 'white', fontWeight: '900'}}>MAX</Text>
+              </TouchableOpacity>
+            </View>
+
+            {maxAmount > (userBalance - transferComission) ? 
+              (<View style={style.footer}>
+                <Text style={{ color: 'red', fontWeight: '600' }}>Insufficient funds on balance!</Text>
+              </View>)
+
+              :  (<View style={style.footer}/>)}
+
           </View>
 
-          {maxAmount > (userBalance - transferComission) ? 
-            (<View style={style.footer}>
-              <Text style={{ color: 'red', fontWeight: '600' }}>Insufficient funds on balance!</Text>
-            </View>)
-
-            :  (<View style={style.footer}/>)}
-
-        </View>
-
-        <View style={style.sendCoinContainer}>
-          <View style={style.footerRectangle}>
-            <TouchableOpacity 
-              style={style.sendCoinButton}
-              onPress={async () => {
-                let request;
-              
-                if (inputTrue) {
-                  request = await SendCoin(coin, maxAmount, userToken, addressSend, unixTimestamp);
-                  console.log(request);
-                  if (request && request.status === 'OK') {
-                    const hash = request.data.hash;
-                    navigation.navigate("SuccessfulTransactionScreen", {hash, maxAmount, addressSend, coin, transferComission, coinCommission});
-                  } else {
-                    console.log('status error');
+          <View style={style.sendCoinContainer}>
+            <View style={style.footerRectangle}>
+              <TouchableOpacity 
+                style={style.sendCoinButton}
+                onPress={async () => {
+                  let request;
+                
+                  if (inputTrue) {
+                    request = await SendCoin(coin, maxAmount, userToken, addressSend, unixTimestamp);
+                    console.log(request);
+                    if (request && request.status === 'OK') {
+                      const hash = request.data.hash;
+                      navigation.navigate("SuccessfulTransactionScreen", {hash, maxAmount, addressSend, coin, transferComission, coinCommission});
+                    } else {
+                      console.log('status error');
+                    }
                   }
-                }
-              }}
-            >
-              <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
-            </TouchableOpacity>
+                }}
+              >
+                <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
 
-      </View>
+        </View>
+      </SafeAreaView>
     </TouchableWithoutFeedback>
   )
 };

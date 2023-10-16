@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, Image, View, TouchableOpacity, Platform, Animated } from 'react-native';
+import { StyleSheet, Text, Image, View, TouchableOpacity, Animated, SafeAreaView, StatusBar } from 'react-native';
 
 import logo from '../assets/logo.png';
 import backgroundImage from '../assets/diagram.png';
@@ -15,8 +15,6 @@ export function StartScreen({ navigation }) {
   const [userIsAuthorized, setUserIsAuthorized] = useState(false);
   const [mnemonic, setMnemonic] = useState([]);
 
-
-  const OS = Platform.OS;
   const translateLogo = useRef(new Animated.Value(-200)).current;
   const translateDiagram = useRef(new Animated.Value(500)).current;
   const translateRectangle = useRef(new Animated.Value(300)).current;
@@ -35,7 +33,7 @@ export function StartScreen({ navigation }) {
     if (isDiagramLoaded) {
       Animated.timing(translateDiagram, {
         toValue: 0, // Конечное значение translateY
-        duration: 1000, // Длительность анимации в миллисекундах
+        duration: 800, // Длительность анимации в миллисекундах
         useNativeDriver: true, // Использовать анимацию на уровне нативного потока
       }).start();
     } else {
@@ -106,9 +104,11 @@ export function StartScreen({ navigation }) {
 
   return (
 
-    <View>
+    <SafeAreaView style={{backgroundColor: 'black'}}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000"/>
+
       {!userIsAuthorized && (<View style={style.container}>
-      { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined }
+      {/* { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined } */}
   
         <View style={style.logoContainer}>
           <Animated.View style={{ transform: [{ translateY: translateLogo }] }}>
@@ -168,7 +168,7 @@ export function StartScreen({ navigation }) {
       </View> )}
 
       {userIsAuthorized && navigation.navigate("MainScreen")}
-    </View>
+    </SafeAreaView>
 
   )
 };

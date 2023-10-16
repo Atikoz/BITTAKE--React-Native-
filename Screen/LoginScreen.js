@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import RegisterFunction from '../function/functionReg.js';
-import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Alert, Platform } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Alert, StatusBar, SafeAreaView } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import loginRectangle from '../assets/loginRectangle.png';
@@ -8,8 +8,6 @@ import LocalData from '../function/funcionLocalData.js';
 
 export function LoginScreen ({ navigation }) {
   const [mnemonic, setMnemonic] = useState();
-
-  const OS = Platform.OS;
 
   const showMyAlert = (textError) => {
     Alert.alert(
@@ -25,8 +23,9 @@ export function LoginScreen ({ navigation }) {
 
 
   return(
+    <SafeAreaView style={{backgroundColor: 'white'}}>
     <View style={style.container}>
-      { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined }
+      <StatusBar barStyle="black-content" backgroundColor="#ffffff"/>
       <View style={style.navBar}>
         <TouchableOpacity onPress={ () => {navigation.navigate("StartScreen")}}>
           <Image
@@ -74,6 +73,7 @@ export function LoginScreen ({ navigation }) {
       </View>
 
     </View>
+    </SafeAreaView>
   )
 };
 

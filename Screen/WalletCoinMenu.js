@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'react-native-qrcode-svg';
 import InfoUser from '../function/functionGetInfoUser';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Clipboard, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, Clipboard, Alert, StatusBar, SafeAreaView } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 const infoUserInstance = new InfoUser();
@@ -60,76 +60,77 @@ export function WalletCoinMenuScreen({ route, navigation }) {
 
 
   return (
-    <View style={style.container}>
-      <View style={style.statusBar} />
+    <SafeAreaView style={{backgroundColor: 'black'}}>
+      <View style={style.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#000000"/>
 
-      <View style={style.header}>
-        <View style={style.backButton}>
-          <TouchableOpacity onPress={ () => {navigation.navigate("MainScreen")}}>
-              <Image
-                source={backButton}
-                resizeMode="contain"
-              />
+        <View style={style.header}>
+          <View style={style.backButton}>
+            <TouchableOpacity onPress={ () => {navigation.navigate("MainScreen")}}>
+                <Image
+                  source={backButton}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+          </View>
+
+          <View style={style.headerText}>
+            <Text style={{ fontSize: 18, fontWeight: '900' }}>{coin.toUpperCase()} Wallet</Text>
+          </View>
+        </View>
+
+        <View style={{alignItems: 'center'}}>
+          <View style={style.amountContainer}>
+            <View style={{ padding: 20 }}>
+              <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalance} {coin.toUpperCase()}</Text>
+            </View>
+
+            <View style={{ padding: 20 }}>
+              <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalanceUsd}$</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={style.receiptInformation}>
+            <View style={style.receiptInformationRectangle}>
+              <Text style={style.infoText}>To replenish your balance, transfer the desired replenishment amount to this account.</Text>
+            </View>
+          </View>
+
+        <View style={style.qrCodeContainer}>
+          {/* <QRCode value={userWallet} size={200} /> */}
+        </View>
+
+        <View style={style.addressContainer}>
+          <View style={style.userWallet}>
+            <Text style={{ fontSize: 13, fontWeight: '900' }}>{userWallet}</Text>
+          </View>
+
+          <View style={style.copyButtonContainer}>
+            <TouchableOpacity 
+              style={style.copyButton}
+              onPress={ () => {
+                copyToClipboard(userWallet);
+                showMyAlert();
+              }}
+            >
+              <Text style={{ fontSize: 17, fontWeight: '900' }}>COPY ADDRESS</Text>
             </TouchableOpacity>
-        </View>
-
-        <View style={style.headerText}>
-          <Text style={{ fontSize: 18, fontWeight: '900' }}>{coin.toUpperCase()} Wallet</Text>
-        </View>
-      </View>
-
-      <View style={{alignItems: 'center'}}>
-        <View style={style.amountContainer}>
-          <View style={{ padding: 20 }}>
-            <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalance} {coin.toUpperCase()}</Text>
-          </View>
-
-          <View style={{ padding: 20 }}>
-            <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalanceUsd}$</Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={style.receiptInformation}>
-          <View style={style.receiptInformationRectangle}>
-            <Text style={style.infoText}>To replenish your balance, transfer the desired replenishment amount to this account.</Text>
           </View>
         </View>
 
-      <View style={style.qrCodeContainer}>
-        {/* <QRCode value={userWallet} size={200} /> */}
-      </View>
-
-      <View style={style.addressContainer}>
-        <View style={style.userWallet}>
-          <Text style={{ fontSize: 13, fontWeight: '900' }}>{userWallet}</Text>
-        </View>
-
-        <View style={style.copyButtonContainer}>
-          <TouchableOpacity 
-            style={style.copyButton}
-            onPress={ () => {
-              copyToClipboard(userWallet);
-              showMyAlert();
-            }}
-          >
-            <Text style={{ fontSize: 17, fontWeight: '900' }}>COPY ADDRESS</Text>
-          </TouchableOpacity>
+        <View style={style.sendCoinContainer}>
+          <View style={style.footerRectangle}>
+            <TouchableOpacity 
+              style={style.sendCoinButton}
+              onPress={ () => {navigation.navigate("SendCoinScreen", { coin })}}
+            >
+              <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-
-      <View style={style.sendCoinContainer}>
-        <View style={style.footerRectangle}>
-          <TouchableOpacity 
-            style={style.sendCoinButton}
-            onPress={ () => {navigation.navigate("SendCoinScreen", { coin })}}
-          >
-            <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-
-    </View>
+    </SafeAreaView>
   );
 };
 

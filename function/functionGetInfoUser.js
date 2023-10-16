@@ -32,6 +32,10 @@ class InfoUser {
     const userToken = (await functionReg.loginUser(userMnemonic)).token;
     const userTransactions = await this.getTransactionUser(userToken);
     const coinBalance = await this.GetinfoUser(userToken);
+
+    // console.log(coinBalance);
+    // console.log('______________');
+
     return {
       coinBalance: coinBalance,
       userTransactions: userTransactions
