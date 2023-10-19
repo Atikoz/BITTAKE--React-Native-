@@ -7,7 +7,6 @@ class InfoUser {
   async GetinfoUser(token) {
     let data = {
       method: 'get',
-      maxBodyLength: Infinity,
       url: `${config.apiUrl}/v1/balance/balance`,
       headers: {
         'Authorization': `Bearer ${token}`
@@ -16,6 +15,7 @@ class InfoUser {
 
     return axios.request(data)
       .then((response) => {
+        // console.log(response.data);
         if (response.data.status === 'OK') {
           return response.data.data
         } else {
@@ -33,8 +33,12 @@ class InfoUser {
     const userTransactions = await this.getTransactionUser(userToken);
     const coinBalance = await this.GetinfoUser(userToken);
 
+    // console.log('______________');
     // console.log(coinBalance);
     // console.log('______________');
+    // console.log(userMnemonic);
+    // console.log('______________');
+    // console.log(userToken);
 
     return {
       coinBalance: coinBalance,

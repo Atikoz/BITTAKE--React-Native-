@@ -20,6 +20,9 @@ export function SendCoinScreen({route, navigation}) {
   const [maxAmount, setMaxAmount] = useState(0);
   const [inputTrue, setInputTrue] = useState(false);
   const [unixTimestamp, setUnixTimestamp] = useState();
+  const [networkCoin, setNetworkCoin] = useState([]);
+  const [minimalTransferAmount, setMinTransferAmount] = useState([]);
+
   
   useEffect(() => {
     async function updateUserToken() {
@@ -42,7 +45,9 @@ export function SendCoinScreen({route, navigation}) {
       setUserBalanceUsd(coinBalance[0].amountInUsd);
       setPriceToUsd(coinBalance[0].priceToUsd);
       setTransferComission(coinBalance[0].amountCommission);
-      setCoinComission(coinBalance[0].coinComission)
+      setCoinComission(coinBalance[0].coinComission);
+      setNetworkCoin(coinBalance[0].network);
+      setMinTransferAmount(coinBalance[0].minimumWithdrawalAmount);
     }
 
     coinBalance();
@@ -172,14 +177,32 @@ export function SendCoinScreen({route, navigation}) {
                 <Text style={{color: 'white', fontWeight: '900'}}>MAX</Text>
               </TouchableOpacity>
             </View>
+  
+            {minimalTransferAmount > maxAmount ? 
+            (<View style={style.footer}>
+                <Text style={{ color: 'red', fontWeight: '600' }}>Transfer amount is below the minimum!</Text>
+              </View>) : (<View style={style.footer}/>)}
+
 
             {maxAmount > (userBalance - transferComission) ? 
               (<View style={style.footer}>
                 <Text style={{ color: 'red', fontWeight: '600' }}>Insufficient funds on balance!</Text>
-              </View>)
+              </View>) : (<View style={style.footer}/>)}
 
-              :  (<View style={style.footer}/>)}
+          </View>
 
+          <View style={style.infoRectangle}>
+            <View style={style.blackRectangle}>
+
+              <View style={{ paddingLeft: 10 }}>
+                <Text style={style.infoTextStyle}>Network:   {networkCoin}</Text>
+              </View>
+
+              <View style={{ paddingTop: 10, paddingLeft: 10 }}>
+                <Text style={style.infoTextStyle}>Minimal transfer amount:   {minimalTransferAmount} {coin.toUpperCase()}</Text>
+              </View>
+              
+            </View>
           </View>
 
           <View style={style.sendCoinContainer}>
@@ -265,7 +288,7 @@ const style = StyleSheet.create({
   
   inputContain: {
     marginTop: 15,
-    height: 140,
+    height: 180,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end'
@@ -300,7 +323,7 @@ const style = StyleSheet.create({
 
   sendCoinContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
 
   sendCoinButton: {
@@ -328,6 +351,27 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 15
+  },
+
+  infoRectangle: {
+    height: 150,
+    width: '100%',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+
+  blackRectangle: {
+    height: 80,
+    width: '95%',
+    borderRadius: 10,
+    backgroundColor: 'black',
+    justifyContent: 'center'
+  },
+
+  infoTextStyle: {
+    color: 'white',
+    fontWeight: '800',
+    fontSize: 17
   }
 
 })

@@ -63,7 +63,6 @@ export function MainScreen({navigation}) {
 
   return (
     <SafeAreaView style={{backgroundColor: 'black'}}>
-      {/* { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined } */}
       <StatusBar barStyle="light-content" backgroundColor="#000000"/>
       <ScrollView
         contentContainerStyle={style.container}

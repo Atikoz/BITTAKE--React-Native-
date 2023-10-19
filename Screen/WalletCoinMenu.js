@@ -11,15 +11,19 @@ export function WalletCoinMenuScreen({ route, navigation }) {
   const { coin } = route.params;
   const [userWallet, setUserWallet] = useState([]);
   const [userBalance, setUserBalance] = useState([]);
+  const [networkCoin, setNetworkCoin] = useState([]);
   const [userBalanceUsd, setUserBalanceUsd] = useState([]);
-  
+  const [minimalReplenishment, setMinimalReplenishment] = useState([]);
+
 
   useEffect(() => {
 
     async function coinBalance() {
       const coinBalance = await infoUserInstance.getBalanceUser(coin);
       setUserBalance(coinBalance[0].amount);
-      setUserBalanceUsd(coinBalance[0].amountInUsd)
+      setNetworkCoin(coinBalance[0].network);
+      setUserBalanceUsd(coinBalance[0].amountInUsd);
+      setMinimalReplenishment(coinBalance[0].minimumAmountReplenishment);
     }
 
     const intervalId = setInterval(coinBalance, 20000);
@@ -98,12 +102,18 @@ export function WalletCoinMenuScreen({ route, navigation }) {
           </View>
 
         <View style={style.qrCodeContainer}>
-          {/* <QRCode value={userWallet} size={200} /> */}
+          <QRCode value={userWallet} size={200} />
         </View>
 
         <View style={style.addressContainer}>
           <View style={style.userWallet}>
             <Text style={{ fontSize: 13, fontWeight: '900' }}>{userWallet}</Text>
+
+            <View style={{alignItems: 'center', paddingTop: 10}}>
+              <Text style={{ fontSize: 13, fontWeight: '900' }}>Minimal Replenishment: {minimalReplenishment} {coin.toUpperCase()}</Text>
+              <Text style={{ paddingTop: 4, fontSize: 13, fontWeight: '900' }}>Network: {networkCoin}</Text>
+
+            </View>
           </View>
 
           <View style={style.copyButtonContainer}>
@@ -181,19 +191,19 @@ const style = StyleSheet.create({
   },
 
   addressContainer: {
-    height: 150,
+    height: 180,
     width: '100%',
   },
 
   userWallet: {
-    height: 45,
+    height: 80,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end'
   },
 
   copyButtonContainer: {
-    height: 80,
+    height: 90,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center'
@@ -250,7 +260,7 @@ const style = StyleSheet.create({
   },
 
   footerRectangle: {
-    height: 160,
+    height: 140,
     width: '100%',
     backgroundColor: 'black',
     borderTopRightRadius: 50,
