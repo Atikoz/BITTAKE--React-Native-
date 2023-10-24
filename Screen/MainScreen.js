@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Linking, RefreshControl, ScrollView, StatusBar, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Linking, RefreshControl, ScrollView, StatusBar, SafeAreaView, Dimensions } from 'react-native';
 import logo from '../assets/logo.png';
 import Carusel from '../componens/CoinCarusel.js';
 import InfoUser from '../function/functionGetInfoUser';
 import ListTransactions from '../componens/ListTransactions';
 
 const infoUserInstance = new InfoUser();
+const { width, height } = Dimensions.get('window');
+
 
 export function MainScreen({navigation}) {
   const [allMoney, setAllMoney] = useState([]);
@@ -13,19 +15,22 @@ export function MainScreen({navigation}) {
   const [arrayCoinBalance, setArrayCoinBalance] = useState([]);
   const [arrayTransactions, setArrayTransactions] = useState([]);
 
+const circumcisionNumber = (sum) => {
+  return Math.trunc(sum * 1e2) / 1e2
+}
 
   useEffect(() => {
     async function updateUserInfo() {
       const updateInfo = await infoUserInstance.UpdateInfoUser();
       setArrayCoinBalance(updateInfo.coinBalance);
       setArrayTransactions(updateInfo.userTransactions.data);
-    }
 
     const usdSum = [];
-    arrayCoinBalance.map((a) => {usdSum.push(a.amountInUsd)});
+    updateInfo.coinBalance.forEach((a) => {usdSum.push(a.amountInUsd)});
     const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
     setAllMoney(allMoney);
-  
+    }
+
 
     const intervalId = setInterval(updateUserInfo, 20000);
   
@@ -40,12 +45,12 @@ export function MainScreen({navigation}) {
       const updateInfo = await infoUserInstance.UpdateInfoUser();
       setArrayCoinBalance(updateInfo.coinBalance);
       setArrayTransactions(updateInfo.userTransactions.data);
-    }
 
-    const usdSum = [];
-    arrayCoinBalance.map((a) => {usdSum.push(a.amountInUsd)});
-    const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-    setAllMoney(allMoney);
+      const usdSum = [];
+      updateInfo.coinBalance.forEach((a) => {usdSum.push(a.amountInUsd)});
+      const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+      setAllMoney(allMoney);
+    }
   
     updateUserInfo();
     setTimeout(() => {
@@ -80,7 +85,7 @@ export function MainScreen({navigation}) {
 
         <View style={style.maimRectangle}>
           <View style={style.totalBalance}>
-            <Text style={style.textTotalBalance}>{allMoney}$</Text>
+            <Text style={style.textTotalBalance}>{circumcisionNumber(allMoney)}$</Text>
           </View>
 
           <View style={style.whiteRectangle}>

@@ -6,6 +6,14 @@ import backButton from '../assets/backButton.png';
 import { SendCoin } from '../function/functionTransfer';
 const infoUserInstance = new InfoUser();
 
+const circumcisionUsd = (sum) => {
+  return Math.trunc(sum * 1e2) / 1e2
+};
+
+const circumcisionAmount = (sum) => {
+  return Math.trunc(sum * 1e5) / 1e5
+};
+
 
 export function SendCoinScreen({route, navigation}) {
   const { coin } = route.params;
@@ -72,7 +80,7 @@ export function SendCoinScreen({route, navigation}) {
     console.log(transferComission);
 
     if (transferComission.length === 0) return
-    if (coin === coinCommission) setTransferComission(0)
+    // if (coin === coinCommission) setTransferComission(0)
     if(maxAmount > (userBalance - transferComission)) {
       setInputTrue(false);
     } else {
@@ -117,23 +125,23 @@ export function SendCoinScreen({route, navigation}) {
             <View style={style.amountContainer}>
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalance} {coin.toUpperCase()}</Text>
+                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionAmount(userBalance)} {coin.toUpperCase()}</Text>
                 </View>
 
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalanceUsd}$</Text>
-                </View>
-              </View>
-
-              <View style={style.topContent}>
-                <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {(priceToUsd * maxAmount).toFixed(3)}$</Text>
+                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionUsd(userBalanceUsd)}$</Text>
                 </View>
               </View>
 
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Commision transfer: {transferComission} {coin.toUpperCase()}</Text>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {circumcisionUsd((priceToUsd * maxAmount))}$</Text>
+                </View>
+              </View>
+
+              <View style={style.topContent}>
+                <View style={{ padding: 8 }}>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Commision transfer: {circumcisionAmount(transferComission)} {coin.toUpperCase()}</Text>
                 </View>
               </View>
             </View>
@@ -150,7 +158,7 @@ export function SendCoinScreen({route, navigation}) {
               }}
             />
 
-            <View style={{height: 13, width: 'auto', alignItems: 'center'}}>
+            <View style={{height: 20, width: '100%', alignItems: 'center', justifyContent: 'center'}}>
               {userWallet === addressSend ? (<Text style={{ color: 'red', fontWeight: '600' }}>You cannot transfer funds to your address!</Text>) : undefined}
             </View>
 
@@ -182,7 +190,6 @@ export function SendCoinScreen({route, navigation}) {
             (<View style={style.footer}>
                 <Text style={{ color: 'red', fontWeight: '600' }}>Transfer amount is below the minimum!</Text>
               </View>) : (<View style={style.footer}/>)}
-
 
             {maxAmount > (userBalance - transferComission) ? 
               (<View style={style.footer}>
@@ -288,7 +295,7 @@ const style = StyleSheet.create({
   
   inputContain: {
     marginTop: 15,
-    height: 180,
+    height: 170,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'flex-end'
@@ -346,11 +353,10 @@ const style = StyleSheet.create({
   },
 
   footer: {
-    height: 30,
+    height: 20,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 15
   },
 
   infoRectangle: {

@@ -5,9 +5,9 @@ http://178.159.39.251:3000/
 */
 
 /*
-http://inline.dev.na4u.ru
+https://inline.dev.na4u.ru
 */
 
-config.apiUrl = 'http://178.159.39.251:3000';
+config.apiUrl = 'https://inline.dev.na4u.ru';
 
 module.exports = config;

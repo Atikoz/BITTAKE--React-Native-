@@ -6,6 +6,14 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Clipboard, Alert, Stat
 import backButton from '../assets/backButton.png';
 const infoUserInstance = new InfoUser();
 
+const circumcisionUsd = (sum) => {
+  return Math.trunc(sum * 1e2) / 1e2
+};
+
+const circumcisionAmount = (sum) => {
+  return Math.trunc(sum * 1e5) / 1e5
+};
+
 
 export function WalletCoinMenuScreen({ route, navigation }) {
   const { coin } = route.params;
@@ -86,11 +94,11 @@ export function WalletCoinMenuScreen({ route, navigation }) {
         <View style={{alignItems: 'center'}}>
           <View style={style.amountContainer}>
             <View style={{ padding: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalance} {coin.toUpperCase()}</Text>
+              <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionAmount(userBalance)} {coin.toUpperCase()}</Text>
             </View>
 
             <View style={{ padding: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: '900' }}>{userBalanceUsd}$</Text>
+              <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionUsd(userBalanceUsd)}$</Text>
             </View>
           </View>
         </View>
@@ -102,7 +110,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
           </View>
 
         <View style={style.qrCodeContainer}>
-          <QRCode value={userWallet} size={200} />
+          {/* <QRCode value={userWallet} size={200} /> */}
         </View>
 
         <View style={style.addressContainer}>
@@ -110,7 +118,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
             <Text style={{ fontSize: 13, fontWeight: '900' }}>{userWallet}</Text>
 
             <View style={{alignItems: 'center', paddingTop: 10}}>
-              <Text style={{ fontSize: 13, fontWeight: '900' }}>Minimal Replenishment: {minimalReplenishment} {coin.toUpperCase()}</Text>
+              <Text style={{ fontSize: 13, fontWeight: '900' }}>Minimal Replenishment: {circumcisionAmount(minimalReplenishment)} {coin.toUpperCase()}</Text>
               <Text style={{ paddingTop: 4, fontSize: 13, fontWeight: '900' }}>Network: {networkCoin}</Text>
 
             </View>

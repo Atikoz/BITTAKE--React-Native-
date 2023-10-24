@@ -1,17 +1,25 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
+const circumcisionUsd = (sum) => {
+  return Math.trunc(sum * 1e2) / 1e2
+};
+
+const circumcisionAmount = (sum) => {
+  return Math.trunc(sum * 1e5) / 1e5
+}
+
 const ItemCoinBalance = ({coin, amount, sum, navigation }) => {
   
   return (
     <TouchableOpacity style={style.container} onPress={() => navigation.navigate('WalletCoinMenuScreen', { coin })}>
       <View style={style.topBox}>
         <Text style={style.styleText}>{coin.toUpperCase()}</Text>
-        <Text style={style.styleText}>{amount}</Text>
+        <Text style={style.styleText}>{circumcisionAmount(amount)}</Text>
       </View>
 
       <View style={style.botBox}>
-        <Text style={style.styleText}> ${sum}</Text>
+        <Text style={style.styleText}> ${circumcisionUsd(sum)}</Text>
       </View>
     </TouchableOpacity>
   )
