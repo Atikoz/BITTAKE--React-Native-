@@ -108,7 +108,6 @@ export function StartScreen({ navigation }) {
       <StatusBar barStyle="light-content" backgroundColor="#000000"/>
 
       {!userIsAuthorized && (<View style={style.container}>
-      {/* { OS === 'ios' ? ( <View style={style.statusBar} /> ) : undefined } */}
   
         <View style={style.logoContainer}>
           <Animated.View style={{ transform: [{ translateY: translateLogo }] }}>

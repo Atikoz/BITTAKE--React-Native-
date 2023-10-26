@@ -59,8 +59,6 @@ export function RegistrationScreen ({ navigation }) {
     <SafeAreaView style={{backgroundColor: 'white'}}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff"/>
 
-      {/* {OS === 'ios' ? (<View style={style.statusBar} />) : undefined} */}
-
       {loading && (<View style={style.skreenLoaderContainer}>
         <View style={style.loaderTextContainer}>
 

@@ -26,7 +26,17 @@ class LocalData {
       console.error('Помилка при отриманні даних:', error);
       // Обробка помилки
     }
-  }
+  };
+
+  async removeData (key) {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Помилка під час видалення даних: ${error}`);
+    }
+  };
 };
+
+
 
 export default new LocalData();
