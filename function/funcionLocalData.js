@@ -5,6 +5,7 @@ class LocalData {
   async saveUserData(nameData, data) {
     try {
       await AsyncStorage.setItem(`${nameData}`, JSON.stringify(data));
+      console.log('data saved');
     } catch (error) {
     }
   };

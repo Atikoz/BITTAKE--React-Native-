@@ -5,6 +5,10 @@ import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Plat
 
 import backButton from '../assets/backButton.png';
 import Checkbox from '../componens/Checkbox';
+import LocalData from '../function/funcionLocalData.js';
+
+const saveUserData = LocalData.saveUserData;
+
 
 export function RegistrationScreen ({ navigation }) {
   const [checked, setChecked] = useState(false);
@@ -28,6 +32,14 @@ export function RegistrationScreen ({ navigation }) {
 
     fetchData();
 
+  }, []);
+
+  useEffect(() => {
+    const saveDefoultCurrency = async () => {
+      await saveUserData('selectCurrency', `usd`);
+    };
+
+    saveDefoultCurrency();
 
   }, []);
 

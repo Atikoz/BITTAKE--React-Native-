@@ -7,7 +7,7 @@ const BoxWordItems = ({ array }) => {
   return(
     <View style={style.container}>
       <Text>
-        {array.map((word, index) => <WordItem  index={index+1} text={word}/> )}
+        {array.map((word, index) => <WordItem index={index+1} text={word} key={index}/> )}
       </Text>
     </View>
   )

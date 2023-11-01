@@ -4,10 +4,6 @@ import config from '../config.js';
 
 
 class RegisterFunction {
-  async decryptString(encryptedText, key) {
-    // const decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
-    return encryptedText;
-  };
 
   async fetchMnemonic() {
     try {

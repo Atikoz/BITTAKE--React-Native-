@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RegisterFunction from '../function/functionReg.js';
 import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Alert, StatusBar, SafeAreaView } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import loginRectangle from '../assets/loginRectangle.png';
 import LocalData from '../function/funcionLocalData.js';
+
+const saveUserData = LocalData.saveUserData;
+
 
 export function LoginScreen ({ navigation }) {
   const [mnemonic, setMnemonic] = useState();
@@ -20,6 +23,15 @@ export function LoginScreen ({ navigation }) {
       ]
     );
   };
+
+  useEffect(() => {
+    const saveDefoultCurrency = async () => {
+      await saveUserData('selectCurrency', `usd`);
+    };
+
+    saveDefoultCurrency();
+
+  }, []);
 
 
   return(

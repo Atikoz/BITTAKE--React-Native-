@@ -15,9 +15,32 @@ class InfoUser {
 
     return axios.request(data)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         if (response.data.status === 'OK') {
-          return response.data.data
+          return response.data.data.data
+        } else {
+          return []
+        }
+      })
+      .catch((error) => {
+        return console.log(error);
+      });
+  };
+
+  async GetCurrencyList(token) {
+    let data = {
+      method: 'get',
+      url: `${config.apiUrl}/v1/balance/balance`,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    return axios.request(data)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.status === 'OK') {
+          return response.data.data.dataCurrencyList
         } else {
           return []
         }

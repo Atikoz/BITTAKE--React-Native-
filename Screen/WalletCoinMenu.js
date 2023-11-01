@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'react-native-qrcode-svg';
+
 import InfoUser from '../function/functionGetInfoUser';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Clipboard, Alert, StatusBar, SafeAreaView } from 'react-native';
 
@@ -110,7 +111,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
           </View>
 
         <View style={style.qrCodeContainer}>
-          <QRCode value={"rqtudsyxfugish;cjdowpjvci[hpeuycyu"} size={200} />
+          <QRCode size={200} value={userWallet} color='black' />
         </View>
 
         <View style={style.addressContainer}>
