@@ -178,7 +178,7 @@ const style = StyleSheet.create({
 
   registerText:{
     fontSize: 25,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
   
   footer:{
@@ -211,13 +211,13 @@ const style = StyleSheet.create({
   copyText: {
     color: 'white',
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: '700',
   },
 
   saveText: {
     left: 12,
-    ontSize: 14,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: '700',
   },
 
   checkboxBase: {

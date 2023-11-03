@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, Image, View, TouchableOpacity, Animated, SafeAreaView, StatusBar } from 'react-native';
+import { StyleSheet, Text, Image, View, TouchableOpacity, Animated, SafeAreaView, StatusBar, ActivityIndicator } from 'react-native';
 
 import logo from '../assets/logo.png';
 import backgroundImage from '../assets/diagram.png';
@@ -10,6 +10,7 @@ const loginUser = RegisterFunction.loginUser;
 const getUserData = funcionLocalData.getUserData;
 
 export function StartScreen({ navigation }) {
+  const [loading, setLoading] = useState(true);
   const [isDiagramLoaded, setIsDiagramLoaded] = useState(false);
   const [isRectangleLoaded, setIsRectangleLoaded] = useState(false);
   const [userIsAuthorized, setUserIsAuthorized] = useState(false);
@@ -19,7 +20,6 @@ export function StartScreen({ navigation }) {
   const translateDiagram = useRef(new Animated.Value(500)).current;
   const translateRectangle = useRef(new Animated.Value(300)).current;
   const translateText = useRef(new Animated.Value(-200)).current;
-
 
   const handleDiagramLoad = () => {
     setIsDiagramLoaded(true);
@@ -72,11 +72,18 @@ export function StartScreen({ navigation }) {
   }, []);
 
   useEffect( () => {
+    const turnOffLoader = () => {
+      const timerId = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+
       const checkLocalStorage = async () => {
       const userFind = await getUserData('userMnemonic');
       console.log(userFind);
       if (userFind === 'user not found') {
-        return
+        turnOffLoader()
       } else {
         setMnemonic(userFind.trim());
       }
@@ -86,12 +93,20 @@ export function StartScreen({ navigation }) {
   }, []);
 
   useEffect( () => {
-      const checkLogin = async () => {
+    const turnOffLoader = () => {
+      const timerId = setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+      return () => clearTimeout(timerId);
+    }
+
+    const checkLogin = async () => {
       const loginSatus = await loginUser(mnemonic);
       console.log(mnemonic);
 
       if (loginSatus.status === 'OK') {
         setUserIsAuthorized(true);
+        turnOffLoader();
       } else {
         return
       }
@@ -103,9 +118,19 @@ export function StartScreen({ navigation }) {
 
 
   return (
-
     <SafeAreaView style={{backgroundColor: 'black'}}>
       <StatusBar barStyle="light-content" backgroundColor="#000000"/>
+
+      {loading && (<View style={style.skreenLoaderContainer}>
+        <View style={style.loaderTextContainer}>
+
+          <View style={style.loaderContainer}>
+            <ActivityIndicator size="large" color="#58FFAF" />
+          </View>
+
+          <Text style={style.textLoader}>Loading</Text>
+        </View>
+      </View>)}
 
       {!userIsAuthorized && (<View style={style.container}>
   
@@ -168,7 +193,6 @@ export function StartScreen({ navigation }) {
 
       {userIsAuthorized && navigation.navigate("MainScreen")}
     </SafeAreaView>
-
   )
 };
 
@@ -269,6 +293,31 @@ const style = StyleSheet.create({
   voidContainer: {
     height: 100,
     width: 'auto',
+  },
+
+  skreenLoaderContainer: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+  },
+
+  loaderContainer: {
+    height: 400,
+    width: '100%',
+    justifyContent: 'flex-end',
+    paddingBottom: 15
+  },
+
+  loaderTextContainer: {
+    height: 'auto',
+    width: 'auto',
+    alignItems: 'center'
+  },
+
+  textLoader:{
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'white'
   }
 
 });
