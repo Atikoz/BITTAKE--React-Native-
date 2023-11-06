@@ -6,7 +6,7 @@ import logo from '../assets/black-logo.png'
 
 
 export function SuccessfulTransactionScreen ({ route, navigation}) {
-  const { hash, maxAmount, addressSend, coin, transferComission, coinCommission} = route.params;
+  const { hash, transferAmount, transferAddress, coin, transferComission, coinCommission} = route.params;
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
@@ -46,17 +46,17 @@ export function SuccessfulTransactionScreen ({ route, navigation}) {
         </View>
 
         <View style={style.addressSendContainer}>
-          <View style={style.addressSend}>
+          <View style={style.transferAddress}>
             <Text style={style.textStyle}>Address Send:</Text>
-            <Text style={style.textStyle}>{addressSend}</Text>
+            <Text style={style.textStyle}>{transferAddress}</Text>
           </View>
         </View>
 
         <View style={style.addressSendContainer}>
-          <View style={style.addressSend}>
+          <View style={style.transferAddress}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', height: '50%', alignItems: 'center'}}>
               <Text style={style.textStyle}>Amount Send:</Text>
-              <Text style={style.textStyle}> {maxAmount} {coin.toUpperCase()}</Text>
+              <Text style={style.textStyle}> {transferAmount} {coin.toUpperCase()}</Text>
             </View>
 
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '50%'}}>
@@ -106,7 +106,7 @@ const style = StyleSheet.create({
   },
 
   hashInfoContainer: {
-    height: '15%',
+    height: '17%',
     width: '100%',
     marginTop: 10,
     alignItems: 'center'
@@ -148,7 +148,7 @@ const style = StyleSheet.create({
     justifyContent: 'flex-end'
   },
 
-  addressSend: {
+  transferAddress: {
     height: '100%',
     width: '95%',
     borderRadius: 25,
@@ -158,7 +158,7 @@ const style = StyleSheet.create({
   },
 
   footerRectangle: {
-    height: 160,
+    height: 140,
     width: '100%',
     backgroundColor: 'black',
     borderTopRightRadius: 50,

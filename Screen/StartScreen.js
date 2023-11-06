@@ -86,6 +86,7 @@ export function StartScreen({ navigation }) {
         turnOffLoader()
       } else {
         setMnemonic(userFind.trim());
+        turnOffLoader();
       }
     }
 

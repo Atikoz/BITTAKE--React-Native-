@@ -16,7 +16,7 @@ const circumcisionAmount = (sum) => {
   return Math.trunc(sum * 1e5) / 1e5
 };
 
-export function SendCoinScreen({route, navigation}) {
+export function SendCoinScreen({ route, navigation }) {
   const { coin } = route.params;
   const [userToken, setUserToken] = useState([]);
   const [userWallet, setUserWallet] = useState([]);
@@ -32,12 +32,12 @@ export function SendCoinScreen({route, navigation}) {
 
   const validationSchema = yup.object().shape({
     address: yup.string()
-    .required('Required field')
-    .notOneOf([userWallet], 'You cannot transfer funds to your address!'),
+      .required('Required field')
+      .notOneOf([userWallet], 'You cannot transfer funds to your address!'),
     amount: yup.number()
-    .required('Required field')
-    .min(minimalTransferAmount, 'Transfer amount is below the minimum!')
-    .max(userBalance - transferComission, 'Insufficient funds on balance!')
+      .required('Required field')
+      .min(minimalTransferAmount, 'Transfer amount is below the minimum!')
+      .max(userBalance - transferComission, 'Insufficient funds on balance!')
   });
 
   useEffect(() => {
@@ -47,9 +47,9 @@ export function SendCoinScreen({route, navigation}) {
     }
 
     const intervalId = setInterval(updateUserToken, 20000);
-  
+
     updateUserToken();
-  
+
     return () => clearInterval(intervalId);
   }, []);
 
@@ -60,9 +60,9 @@ export function SendCoinScreen({route, navigation}) {
     };
 
     const intervalId = setInterval(unixTimestamp, 60000);
-  
+
     unixTimestamp();
-  
+
     return () => clearInterval(intervalId);
   }, [])
 
@@ -90,38 +90,41 @@ export function SendCoinScreen({route, navigation}) {
     }
 
     getUserWallet();
-  },[userToken]);
+  }, [userToken]);
 
   const handleSubmit = async (values) => {
-    let request;
-    const transferAmount = values.amount;
-    const transferAddress = values.address;
-    console.log('parametrs send:', coin, transferAmount, userToken, transferAddress, unixTimestamp);
-    
-    request = await SendCoin(coin, transferAmount, userToken, transferAddress, unixTimestamp);
-    console.log(request);
-    if (request && request.status === 'OK') {
-      const hash = request.data.hash;
-      navigation.navigate("SuccessfulTransactionScreen", {hash, transferAmount, transferAddress, coin, transferComission, coinCommission});
-    } else {
-      console.log('status error');
+    try {
+      const transferAmount = values.amount;
+      const transferAddress = values.address;
+      console.log('parametrs send:', coin, transferAmount, userToken, transferAddress, unixTimestamp);
+
+      const request = await SendCoin(coin, transferAmount, userToken, transferAddress, unixTimestamp);
+      console.log(request);
+      if (request && request.status === 'OK') {
+        const hash = request.data.hash;
+        navigation.navigate("SuccessfulTransactionScreen", { hash, transferAmount, transferAddress, coin, transferComission, coinCommission });
+      } else {
+        console.log('status error');
+      }
+    } catch (error) {
+      console.error(error)
     }
   };
- 
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeAreaView style={{backgroundColor: 'black'}}>
+      <SafeAreaView style={{ backgroundColor: 'black' }}>
         <View style={style.container}>
-          <StatusBar barStyle="light-content" backgroundColor="#000000"/>
-          
+          <StatusBar barStyle="light-content" backgroundColor="#000000" />
+
           <View style={style.header}>
             <View style={style.backButton}>
-              <TouchableOpacity onPress={ () => {navigation.navigate("MainScreen")}}>
-                  <Image
-                    source={backButton}
-                    resizeMode="contain"
-                  />
-                </TouchableOpacity>
+              <TouchableOpacity onPress={() => { navigation.navigate("MainScreen") }}>
+                <Image
+                  source={backButton}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
             </View>
 
             <View style={style.headerText}>
@@ -129,7 +132,7 @@ export function SendCoinScreen({route, navigation}) {
             </View>
           </View>
 
-          <View style={{alignItems: 'center'}}>
+          <View style={{ alignItems: 'center' }}>
             <View style={style.amountContainer}>
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
@@ -160,56 +163,56 @@ export function SendCoinScreen({route, navigation}) {
               initialValues={{ address: '', amount: `` }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
-              >
+            >
               {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
-              <View style={{height: 'auto', width: '100%'}}>
-                <View style={{alignItems: 'center'}}>
-                  <TextInput
-                    onChangeText={(text) => {
-                      const cleanedText = text.trim();
-                      handleChange('address')(cleanedText)
-                    }}
-                    onBlur={handleBlur('address')}
-                    value={values.address}
-                    placeholder="Wallet address"
-                    placeholderTextColor='#858383'
-                    style={style.walletInput}
+                <View style={{ height: 'auto', width: '100%' }}>
+                  <View style={{ alignItems: 'center' }}>
+                    <TextInput
+                      onChangeText={(text) => {
+                        const cleanedText = text.trim();
+                        handleChange('address')(cleanedText)
+                      }}
+                      onBlur={handleBlur('address')}
+                      value={values.address}
+                      placeholder="Wallet address"
+                      placeholderTextColor='#858383'
+                      style={style.walletInput}
                     />
-                  {touched.address && errors.address && <Text style={{color: 'red', fontWeight: '700', marginTop: 5}}>{errors.address}</Text>}
-                </View>
+                    {touched.address && errors.address && <Text style={{ color: 'red', fontWeight: '700', marginTop: 5 }}>{errors.address}</Text>}
+                  </View>
 
-                <View style={{marginTop: 15, alignItems: 'center'}}>
-                  <TextInput
-                    style={style.amountInput}
-                    onBlur={handleBlur('amount')}
-                    value={values.amount}
-                    placeholder="Amount send"
-                    placeholderTextColor='#858383'
-                    keyboardType="numeric"
-                    onChangeText={(text) => {
-                      let cleanedNumber = text.replace(',', '.');
-                      if (cleanedNumber.charAt(0) === '.') {
-                        cleanedNumber = '0' + cleanedNumber;
-                      };
-                      const cleanedText = cleanedNumber.replace(/[^0-9.]/g, '');
-                      // Перевірка на кількість крапок (можливо, ви хочете обмежити тільки одну крапку)
-                      if (cleanedText.split('.').length <= 2) {
-                        setAmountSend(cleanedText);
-                        handleChange('amount')(cleanedText);
-                      }
-                    }}
-                  />
-                  {touched.amount && errors.amount && <Text style={{color: 'red', fontWeight: '700', marginTop: 5}}>{errors.amount}</Text>}
-                </View>
+                  <View style={{ marginTop: 15, alignItems: 'center' }}>
+                    <TextInput
+                      style={style.amountInput}
+                      onBlur={handleBlur('amount')}
+                      value={values.amount}
+                      placeholder="Amount send"
+                      placeholderTextColor='#858383'
+                      keyboardType="numeric"
+                      onChangeText={(text) => {
+                        let cleanedNumber = text.replace(',', '.');
+                        if (cleanedNumber.charAt(0) === '.') {
+                          cleanedNumber = '0' + cleanedNumber;
+                        };
+                        const cleanedText = cleanedNumber.replace(/[^0-9.]/g, '');
+                        // Перевірка на кількість крапок (можливо, ви хочете обмежити тільки одну крапку)
+                        if (cleanedText.split('.').length <= 2) {
+                          setAmountSend(cleanedText);
+                          handleChange('amount')(cleanedText);
+                        }
+                      }}
+                    />
+                    {touched.amount && errors.amount && <Text style={{ color: 'red', fontWeight: '700', marginTop: 5 }}>{errors.amount}</Text>}
+                  </View>
 
-                <View style={{ height: 100, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                  <TouchableOpacity 
-                    style={style.sendCoinButton}
-                    onPress={handleSubmit}>
-                    <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
-                  </TouchableOpacity>
+                  <View style={{ height: 100, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity
+                      style={style.sendCoinButton}
+                      onPress={handleSubmit}>
+                      <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
               )}
             </Formik>
           </View>
@@ -233,7 +236,7 @@ export function SendCoinScreen({route, navigation}) {
 };
 
 const style = StyleSheet.create({
-  container:{
+  container: {
     backgroundColor: 'white',
     height: '100%',
     width: 'auto',
@@ -241,7 +244,7 @@ const style = StyleSheet.create({
   },
 
   statusBar: {
-    width:'auto',
+    width: 'auto',
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
@@ -282,7 +285,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  
+
   inputContain: {
     marginTop: 35,
     height: '35%',
