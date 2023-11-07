@@ -22,6 +22,7 @@ export function MainScreen({navigation}) {
   useEffect(() => {
     async function updateUserInfo() {
       const updateInfo = await infoUserInstance.UpdateInfoUser();
+      if (updateInfo.userTransactions.status === 'error') return
       setArrayCoinBalance(updateInfo.coinBalance);
       setArrayTransactions(updateInfo.userTransactions.data);
 

@@ -15,10 +15,11 @@ class InfoUser {
 
     return axios.request(data)
       .then((response) => {
-        console.log(response.data);
+        console.log('response', response.data);
         if (response.data.status === 'OK') {
           return response.data.data.data
         } else {
+          console.log('login error');
           return []
         }
       })

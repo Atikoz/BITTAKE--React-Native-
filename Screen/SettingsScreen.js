@@ -81,7 +81,8 @@ export function SettingsScreen({navigation}) {
 
   const handleConfirmLogout = async () => {
     await userLogOut();
-    navigation.navigate("StartScreen")
+    navigation.navigate("StartScreen");
+    closeModal();
   }
 
   const userLogOut = React.useCallback(async () => {
@@ -169,7 +170,7 @@ export function SettingsScreen({navigation}) {
                       onPress={() => handleCurrencySelect(currency)}
                       style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: 'white', alignItems: 'center' }}
                     >
-                      <Text style={{ color: 'white', fontSize: 18 }}>{currency.toUpperCase()}</Text>
+                      <Text style={{ color: 'white', fontSize: 18 }}>{}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
