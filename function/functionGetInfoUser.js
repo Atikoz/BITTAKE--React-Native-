@@ -15,7 +15,6 @@ class InfoUser {
 
     return axios.request(data)
       .then((response) => {
-        console.log('response', response.data);
         if (response.data.status === 'OK') {
           return response.data.data.data
         } else {
@@ -39,7 +38,6 @@ class InfoUser {
 
     return axios.request(data)
       .then((response) => {
-        console.log(response.data);
         if (response.data.status === 'OK') {
           return response.data.data.dataCurrencyList
         } else {
@@ -56,14 +54,7 @@ class InfoUser {
     const userToken = (await functionReg.loginUser(userMnemonic)).token;
     const userTransactions = await this.getTransactionUser(userToken);
     const coinBalance = await this.GetinfoUser(userToken);
-
-    // console.log('______________');
-    // console.log(coinBalance);
-    // console.log('______________');
-    // console.log(userMnemonic);
-    // console.log('______________');
-    // console.log(userToken);
-
+    
     return {
       coinBalance: coinBalance,
       userTransactions: userTransactions

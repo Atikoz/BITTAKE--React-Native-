@@ -3,7 +3,6 @@ import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import TransactionItem from './TransactionItem.js';
 
 const ListTransactions = ({ array }) => {
-  console.log('array:', array);
 
   return (
     <ScrollView style={style.wrapper} horizontal={false} >

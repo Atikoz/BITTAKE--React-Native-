@@ -9,7 +9,7 @@ import ListTransactions from '../componens/ListTransactions';
 const infoUserInstance = new InfoUser();
 const { width, height } = Dimensions.get('window');
 
-export function MainScreen({navigation}) {
+export function MainScreen({ navigation }) {
   const [allMoney, setAllMoney] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [arrayCoinBalance, setArrayCoinBalance] = useState([]);
@@ -27,16 +27,17 @@ export function MainScreen({navigation}) {
       setArrayTransactions(updateInfo.userTransactions.data);
 
       const usdSum = [];
-      updateInfo.coinBalance.forEach((a) => {usdSum.push(a.amountInUsd)});
+      const filterArray = updateInfo.coinBalance.filter(coin => coin.status === true);
+      filterArray.forEach((a) => { usdSum.push(a.amountInUsd) });
       const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
       setAllMoney(allMoney);
-      }
+    }
 
 
-      const intervalId = setInterval(updateUserInfo, 20000);
-  
+    const intervalId = setInterval(updateUserInfo, 20000);
+
     updateUserInfo();
-  
+
     return () => clearInterval(intervalId);
   }, []);
 
@@ -48,11 +49,13 @@ export function MainScreen({navigation}) {
       setArrayTransactions(updateInfo.userTransactions.data);
 
       const usdSum = [];
-      updateInfo.coinBalance.forEach((a) => {usdSum.push(a.amountInUsd)});
+      console.log(updateInfo.coinBalance);
+      const filterArray = updateInfo.coinBalance.filter(coin => coin.status === true);
+      filterArray.forEach((a) => { usdSum.push(a.amountInUsd) });
       const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
       setAllMoney(allMoney);
     }
-  
+
     updateUserInfo();
     setTimeout(() => {
       setRefreshing(false);
@@ -68,8 +71,8 @@ export function MainScreen({navigation}) {
 
 
   return (
-    <SafeAreaView style={{backgroundColor: 'black'}}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000"/>
+    <SafeAreaView style={{ backgroundColor: 'black' }}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <ScrollView
         contentContainerStyle={style.container}
         refreshControl={
@@ -78,18 +81,18 @@ export function MainScreen({navigation}) {
 
         <View style={style.headerBox}>
 
-        <View style={{paddingLeft: 20}}>
-          <Image
+          <View style={{ paddingLeft: 20 }}>
+            <Image
               source={logo}
-              style={{ width: 160, height: 30 }} 
+              style={{ width: 160, height: 30 }}
               resizeMode="contain"
             />
           </View>
 
-          <TouchableOpacity onPress={() => {navigation.navigate("SettingsScreen")}} style={{paddingRight: 30}}>
-            <Image 
+          <TouchableOpacity onPress={() => { navigation.navigate("SettingsScreen") }} style={{ paddingRight: 30 }}>
+            <Image
               source={settingsIcon}
-              style={{ width: 30, height: 30 }} 
+              style={{ width: 30, height: 30 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -102,7 +105,7 @@ export function MainScreen({navigation}) {
 
           <View style={style.whiteRectangle}>
             <View style={style.coinBalanceContainer}>
-              <Carusel array={arrayCoinBalance} navigation={navigation}/>
+              <Carusel array={arrayCoinBalance} navigation={navigation} />
             </View>
 
             <View style={style.transactionContainer}>
@@ -110,20 +113,20 @@ export function MainScreen({navigation}) {
                 <Text style={{ fontSize: 20, fontWeight: '900' }}>Recent Transactions</Text>
               </View>
 
-              <ListTransactions array={arrayTransactions}/>
+              <ListTransactions array={arrayTransactions} />
 
             </View>
           </View>
 
           <View style={style.footer}>
-            <TouchableOpacity 
-              style={{ height: 50, width: 150, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginLeft: 25}}
+            <TouchableOpacity
+              style={{ height: 50, width: 150, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginLeft: 25 }}
               onPress={handlePress}>
               <Text style={{ fontWeight: '900', fontSize: 16 }}>BUY</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
-              style={{ height: 50, width: 150, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginRight: 25}}
+            <TouchableOpacity
+              style={{ height: 50, width: 150, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginRight: 25 }}
               onPress={handlePress}>
               <Text style={{ fontWeight: '900', fontSize: 16, color: 'white' }}>SELL</Text>
             </TouchableOpacity>
@@ -136,7 +139,7 @@ export function MainScreen({navigation}) {
 }
 
 const style = StyleSheet.create({
-  container:{
+  container: {
     backgroundColor: 'black',
     width: '100%',
     height: 800,
@@ -144,7 +147,7 @@ const style = StyleSheet.create({
   },
 
   statusBar: {
-    width:'auto',
+    width: 'auto',
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
@@ -152,7 +155,7 @@ const style = StyleSheet.create({
   },
 
   headerBox: {
-    width:'100%',
+    width: '100%',
     height: 80,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -168,7 +171,7 @@ const style = StyleSheet.create({
   },
 
   totalBalance: {
-    width:'auto',
+    width: 'auto',
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',
@@ -177,7 +180,7 @@ const style = StyleSheet.create({
   textTotalBalance: {
     fontSize: 33,
     fontWeight: '900'
-  }, 
+  },
 
   whiteRectangle: {
     backgroundColor: 'white',
@@ -202,7 +205,7 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     height: 80,
     width: 'auto',
-    justifyContent: 'space-between', 
+    justifyContent: 'space-between',
     alignItems: 'center'
   }
 })

@@ -22,11 +22,11 @@ export const Navigation = () => {
   const [userIsAuthorized, setUserIsAuthorized] = useState(null);
 
   useEffect(() => {
-    const checkLocalStorage = async () => {
+    const checkUserSession = async () => {
       const userMnemonic = await getUserData('userMnemonic');
 
       if (userMnemonic === 'user not found') {
-        return setUserIsAuthorized(false);
+        setUserIsAuthorized(false);
       } else {
         const loginSatus = await loginUser(userMnemonic.trim());
 
@@ -40,7 +40,7 @@ export const Navigation = () => {
       }
     };
 
-    checkLocalStorage();
+    checkUserSession();
 
   }, []);
 

@@ -21,12 +21,13 @@ const removeLocalData = funcionLocalData.removeData;
 const infoUserInstance = new InfoUser();
 
 
-export function SettingsScreen({navigation}) {
+export function SettingsScreen({ navigation }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCurrency, onCurrencySelect] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [userToken, setUserToken] = useState([]);
+  const [nameCurrencies, setNameCurrencies] = useState([]);
 
 
   const handleCurrencySelect = async (currency) => {
@@ -42,9 +43,9 @@ export function SettingsScreen({navigation}) {
     };
 
     const intervalId = setInterval(updateUserToken, 20000);
-  
+
     updateUserToken();
-  
+
     return () => clearInterval(intervalId);
   }, [])
 
@@ -66,7 +67,15 @@ export function SettingsScreen({navigation}) {
     };
 
     getCurrencyList();
-  }, [userToken])
+  }, [userToken]);
+
+  useEffect(() => {
+    const data = [];
+    currencies.map((n) => { data.push(n.name) });
+
+    setNameCurrencies(data)
+
+  }, [currencies])
 
   const refRBSheet = useRef();
 
@@ -105,20 +114,20 @@ export function SettingsScreen({navigation}) {
 
 
   return (
-    <SafeAreaView style={{backgroundColor: 'black'}}>
-      <StatusBar barStyle="light-content" backgroundColor="#000000"/>
+    <SafeAreaView style={{ backgroundColor: 'black' }}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
       <View style={style.container}>
         <View style={style.header}>
-          <TouchableOpacity style={style.backButtonContainer} onPress={() => {navigation.navigate("MainScreen")}}>
+          <TouchableOpacity style={style.backButtonContainer} onPress={() => { navigation.navigate("MainScreen") }}>
             <Image
               source={backButton}
               style={{ paddingTop: 12 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          
+
           <View style={style.headerText}>
-            <Text style={{ fontWeight:'900', fontSize: 16}}>Settings</Text>
+            <Text style={{ fontWeight: '900', fontSize: 16 }}>Settings</Text>
           </View>
         </View>
 
@@ -126,20 +135,21 @@ export function SettingsScreen({navigation}) {
           <View style={style.itemSettings}>
             <View style={style.itemLang}>
               <View>
-                <Image 
-                source={currencyLogo}
-                style={{ width: 25, height: 25 }} 
-                resizeMode="contain"
+                <Image
+                  source={currencyLogo}
+                  style={{ width: 25, height: 25 }}
+                  resizeMode="contain"
                 />
               </View>
 
-              <View style={{paddingLeft: 5}}>
-                <Text style={{fontSize: 16, fontWeight: '600'}}>Currency</Text>
+              <View style={{ paddingLeft: 5 }}>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>Currency</Text>
               </View>
             </View>
 
-            <TouchableOpacity onPress={ () => {
-              refRBSheet.current.open()}}> 
+            <TouchableOpacity onPress={() => {
+              refRBSheet.current.open()
+            }}>
               <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
@@ -164,22 +174,22 @@ export function SettingsScreen({navigation}) {
                   <Text style={{ color: 'white', fontSize: 22, fontWeight: '900', textAlign: 'center' }}>
                     Select Currency
                   </Text>
-                  {currencies.map((currency) => (
+                  {nameCurrencies.map((name) => (
                     <TouchableOpacity
-                      key={currency}
-                      onPress={() => handleCurrencySelect(currency)}
+                      key={name}
+                      onPress={() => handleCurrencySelect(name)}
                       style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: 'white', alignItems: 'center' }}
                     >
-                      <Text style={{ color: 'white', fontSize: 18 }}>{}</Text>
+                      <Text style={{ color: 'white', fontSize: 18 }}>{name.toUpperCase()}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
 
               </RBSheet>
-              
-            <View>
-              <Text style={{fontSize: 16, fontWeight: '600'}}>{selectedCurrency}</Text>
-            </View>
+
+              <View>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>{selectedCurrency}</Text>
+              </View>
             </TouchableOpacity>
 
           </View>
@@ -187,29 +197,29 @@ export function SettingsScreen({navigation}) {
           <View style={style.itemSettings}>
             <View style={style.itemLang}>
               <View>
-                <Image 
-                source={worldLogo}
-                style={{ width: 25, height: 25 }} 
-                resizeMode="contain"
+                <Image
+                  source={worldLogo}
+                  style={{ width: 25, height: 25 }}
+                  resizeMode="contain"
                 />
               </View>
 
-              <View style={{paddingLeft: 5}}>
-                <Text style={{fontSize: 16, fontWeight: '600'}}>Language</Text>
+              <View style={{ paddingLeft: 5 }}>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>Language</Text>
               </View>
             </View>
 
             <View>
-              <Text style={{fontSize: 16, fontWeight: '600'}}>English</Text>
+              <Text style={{ fontSize: 16, fontWeight: '600' }}>English</Text>
             </View>
           </View>
 
           <TouchableOpacity onPress={openModal} style={style.itemLogout}>
             <View>
-              <Image 
-              source={logoutIcon}
-              style={{ width: 30, height: 30 }} 
-              resizeMode="contain"
+              <Image
+                source={logoutIcon}
+                style={{ width: 30, height: 30 }}
+                resizeMode="contain"
               />
             </View>
 
@@ -230,7 +240,7 @@ export function SettingsScreen({navigation}) {
             </Modal>
 
             <View>
-              <Text style={{fontSize: 16, fontWeight: '600'}}>Logout</Text>
+              <Text style={{ fontSize: 16, fontWeight: '600' }}>Logout</Text>
             </View>
           </TouchableOpacity>
 
@@ -240,27 +250,27 @@ export function SettingsScreen({navigation}) {
           <View style={style.textContainer}>
             <Text style={{ fontSize: 16, fontWeight: '900' }}>Social Network</Text>
           </View>
-          
+
           <TouchableOpacity onPress={handlePressTelegram} style={style.socItem}>
-            <Image 
+            <Image
               source={telegramLogo}
               resizeMode="contain"
-              style={{ height: 30, width: 30}}
-              />
-              <View style={{paddingLeft: 2}}>
-                <Text style={{fontSize: 16, fontWeight: '700'}}>Telegram</Text>
-              </View>
+              style={{ height: 30, width: 30 }}
+            />
+            <View style={{ paddingLeft: 2 }}>
+              <Text style={{ fontSize: 16, fontWeight: '700' }}>Telegram</Text>
+            </View>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={handlePressMail} style={style.socItem}>
-            <Image 
+            <Image
               source={mailLogo}
               resizeMode="contain"
-              style={{ height: 30, width: 30}}
-              />
-              <View style={{paddingLeft: 5}}>
-                <Text style={{fontSize: 16, fontWeight: '700'}}>Gmail</Text>
-              </View>
+              style={{ height: 30, width: 30 }}
+            />
+            <View style={{ paddingLeft: 5 }}>
+              <Text style={{ fontSize: 16, fontWeight: '700' }}>Gmail</Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
@@ -269,7 +279,7 @@ export function SettingsScreen({navigation}) {
 }
 
 const style = StyleSheet.create({
-  container:{
+  container: {
     backgroundColor: 'white',
     width: '100%',
     height: 800,
@@ -291,13 +301,13 @@ const style = StyleSheet.create({
   },
 
   backButtonContainer: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      height: '100%',
-      width: '18%'
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '18%'
   },
 
-  headerText: { 
+  headerText: {
     alignItems: 'flex-start',
     justifyContent: 'center',
     height: '100%',
@@ -309,7 +319,7 @@ const style = StyleSheet.create({
     width: '100%',
     marginTop: 20,
   },
-  
+
   itemSettings: {
     height: 50,
     paddingLeft: 10,
