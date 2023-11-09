@@ -17,13 +17,11 @@ const circumcisionAmount = (sum) => {
 
 
 export function WalletCoinMenuScreen({ route, navigation }) {
-  const { coin } = route.params;
+  const { coin, object, symbol, selectCurrency } = route.params;
   const [userWallet, setUserWallet] = useState([]);
   const [userBalance, setUserBalance] = useState([]);
   const [networkCoin, setNetworkCoin] = useState([]);
-  const [userBalanceUsd, setUserBalanceUsd] = useState([]);
   const [minimalReplenishment, setMinimalReplenishment] = useState([]);
-
 
   useEffect(() => {
 
@@ -31,7 +29,6 @@ export function WalletCoinMenuScreen({ route, navigation }) {
       const coinBalance = await infoUserInstance.getBalanceUser(coin);
       setUserBalance(coinBalance[0].amount);
       setNetworkCoin(coinBalance[0].network);
-      setUserBalanceUsd(coinBalance[0].amountInUsd);
       setMinimalReplenishment(coinBalance[0].minimumAmountReplenishment);
     }
 
@@ -71,6 +68,10 @@ export function WalletCoinMenuScreen({ route, navigation }) {
     );
   };
 
+  useEffect(() => {
+
+  })
+
 
   return (
     <SafeAreaView style={{backgroundColor: 'black'}}>
@@ -99,7 +100,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
             </View>
 
             <View style={{ padding: 20 }}>
-              <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionUsd(userBalanceUsd)}$</Text>
+              <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionUsd(object[selectCurrency])}{symbol}</Text>
             </View>
           </View>
         </View>
@@ -142,7 +143,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
           <View style={style.footerRectangle}>
             <TouchableOpacity 
               style={style.sendCoinButton}
-              onPress={ () => {navigation.navigate("SendCoinScreen", { coin })}}
+              onPress={ () => {navigation.navigate("SendCoinScreen", { coin, object, symbol, selectCurrency })}}
             >
               <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
             </TouchableOpacity>

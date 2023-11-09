@@ -64,6 +64,7 @@ export function SettingsScreen({ navigation }) {
     async function getCurrencyList() {
       const currencyList = await infoUserInstance.GetCurrencyList(userToken);
       setCurrencies(currencyList);
+      console.log(currencyList);
     };
 
     getCurrencyList();

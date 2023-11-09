@@ -1,7 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import funcionLocalData from '../function/funcionLocalData';
+const getUserData = funcionLocalData.getUserData;
 
-const circumcisionUsd = (sum) => {
+const symbol = {
+  usd: '$',
+  eur: '€',
+  rub: '₽'
+};
+
+const circumcisionCurrency = (sum) => {
   return Math.trunc(sum * 1e2) / 1e2
 };
 
@@ -9,17 +17,17 @@ const circumcisionAmount = (sum) => {
   return Math.trunc(sum * 1e5) / 1e5
 }
 
-const ItemCoinBalance = ({coin, amount, sum, navigation }) => {
-  
+const ItemCoinBalance = ({ coin, amount, object, navigation, symbol, selectCurrency }) => {
+
   return (
-    <TouchableOpacity style={style.container} onPress={() => navigation.navigate('WalletCoinMenuScreen', { coin })}>
+    <TouchableOpacity style={style.container} onPress={() => navigation.navigate('WalletCoinMenuScreen', { coin, object, symbol, selectCurrency })}>
       <View style={style.topBox}>
         <Text style={style.styleText}>{coin.toUpperCase()}</Text>
         <Text style={style.styleText}>{circumcisionAmount(amount)}</Text>
       </View>
 
       <View style={style.botBox}>
-        <Text style={style.styleText}> ${circumcisionUsd(sum)}</Text>
+        <Text style={style.styleText}> {symbol}{circumcisionCurrency(object[selectCurrency])}</Text>
       </View>
     </TouchableOpacity>
   )

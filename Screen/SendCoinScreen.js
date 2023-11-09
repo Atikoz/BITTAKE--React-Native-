@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import InfoUser from '../function/functionGetInfoUser';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, StatusBar, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, StatusBar, SafeAreaView, Alert } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import { SendCoin } from '../function/functionTransfer';
@@ -16,13 +16,24 @@ const circumcisionAmount = (sum) => {
   return Math.trunc(sum * 1e5) / 1e5
 };
 
+const showMyAlert = (text) => {
+  Alert.alert(
+    'Error!',
+    `${text}`, //Текст сообщения
+    [
+      {
+        text: 'Continue', // Текст кнопки
+      },
+    ]
+  );
+};
+
 export function SendCoinScreen({ route, navigation }) {
-  const { coin } = route.params;
+  const { coin, object, symbol, selectCurrency } = route.params;
   const [userToken, setUserToken] = useState([]);
   const [userWallet, setUserWallet] = useState([]);
   const [userBalance, setUserBalance] = useState([]);
-  const [userBalanceUsd, setUserBalanceUsd] = useState([]);
-  const [priceToUsd, setPriceToUsd] = useState([]);
+  const [priceInCurr, setPriceInCurr] = useState([]);
   const [coinCommission, setCoinComission] = useState();
   const [transferComission, setTransferComission] = useState([]);
   const [amountSend, setAmountSend] = useState(0);
@@ -70,8 +81,6 @@ export function SendCoinScreen({ route, navigation }) {
     async function coinBalance() {
       const coinBalance = await infoUserInstance.getBalanceUser(coin);
       setUserBalance(coinBalance[0].amount);
-      setUserBalanceUsd(coinBalance[0].amountInUsd);
-      setPriceToUsd(coinBalance[0].priceToUsd);
       setTransferComission(coinBalance[0].amountCommission);
       setCoinComission(coinBalance[0].coinComission);
       setNetworkCoin(coinBalance[0].network);
@@ -92,6 +101,16 @@ export function SendCoinScreen({ route, navigation }) {
     getUserWallet();
   }, [userToken]);
 
+  useEffect(() => {
+    const getPrice = async () => {
+      const coinBalance = await infoUserInstance.getBalanceUser(coin);
+      setPriceInCurr(coinBalance[0].priceInCurrency[selectCurrency])
+    }
+
+    getPrice();
+
+  }, [selectCurrency])
+
   const handleSubmit = async (values) => {
     try {
       const transferAmount = values.amount;
@@ -104,12 +123,22 @@ export function SendCoinScreen({ route, navigation }) {
         const hash = request.data.hash;
         navigation.navigate("SuccessfulTransactionScreen", { hash, transferAmount, transferAddress, coin, transferComission, coinCommission });
       } else {
+        showMyAlert(request.error);
         console.log('status error');
       }
     } catch (error) {
-      console.error(error)
+      showMyAlert(error);
+      console.error(error);
     }
   };
+
+  const getMaxAmountSend = () => {
+    if (userBalance <= (transferComission)) {
+      return 0
+    } else {
+      return userBalance - transferComission
+    }
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -140,13 +169,13 @@ export function SendCoinScreen({ route, navigation }) {
                 </View>
 
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionUsd(userBalanceUsd)}$</Text>
+                  <Text style={{ fontSize: 20, fontWeight: '900' }}>{circumcisionUsd(object[selectCurrency])}{symbol}</Text>
                 </View>
               </View>
 
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {circumcisionUsd((priceToUsd * amountSend))}$</Text>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {circumcisionUsd((priceInCurr * amountSend))}{symbol}</Text>
                 </View>
               </View>
 
@@ -202,6 +231,18 @@ export function SendCoinScreen({ route, navigation }) {
                         }
                       }}
                     />
+
+                    <View style={style.buttMaxContainer}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          const maxAmount = getMaxAmountSend()
+                          setAmountSend(maxAmount)
+                          handleChange('amount')(maxAmount.toString());
+                        }}>
+                        <Text style={{ fontWeight: '800', marginTop: -29, color: 'white', fontSize: 16 }}>MAX</Text>
+                      </TouchableOpacity>
+                    </View>
+
                     {touched.amount && errors.amount && <Text style={{ color: 'red', fontWeight: '700', marginTop: 5 }}>{errors.amount}</Text>}
                   </View>
 
@@ -357,6 +398,12 @@ const style = StyleSheet.create({
     color: 'white',
     fontWeight: '800',
     fontSize: 17
+  },
+
+  buttMaxContainer: {
+    height: 'auto',
+    width: '88%',
+    alignItems: 'flex-end'
   }
 
 });

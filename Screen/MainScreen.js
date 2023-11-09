@@ -5,12 +5,21 @@ import settingsIcon from '../assets/setings-icon.png';
 import Carusel from '../componens/CoinCarusel.js';
 import InfoUser from '../function/functionGetInfoUser';
 import ListTransactions from '../componens/ListTransactions';
+import funcionLocalData from '../function/funcionLocalData';
+const getUserData = funcionLocalData.getUserData;
+
+const symbol = {
+  usd: '$',
+  eur: '€',
+  rub: '₽'
+};
 
 const infoUserInstance = new InfoUser();
 const { width, height } = Dimensions.get('window');
 
 export function MainScreen({ navigation }) {
   const [allMoney, setAllMoney] = useState([]);
+  const [curenSymb, setCurentSymbol] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [arrayCoinBalance, setArrayCoinBalance] = useState([]);
   const [arrayTransactions, setArrayTransactions] = useState([]);
@@ -26,11 +35,13 @@ export function MainScreen({ navigation }) {
       setArrayCoinBalance(updateInfo.coinBalance);
       setArrayTransactions(updateInfo.userTransactions.data);
 
-      const usdSum = [];
+      const allCurrency = [];
+      const selectCurrency = await getUserData('selectCurrency');
       const filterArray = updateInfo.coinBalance.filter(coin => coin.status === true);
-      filterArray.forEach((a) => { usdSum.push(a.amountInUsd) });
-      const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-      setAllMoney(allMoney);
+      filterArray.forEach((a) => { allCurrency.push(a.priceBalanceInCurrency) });
+      const sum = allCurrency.reduce((accum, prev) => accum + +prev[selectCurrency], 0);
+      setCurentSymbol(symbol[selectCurrency]);
+      setAllMoney(sum);
     }
 
 
@@ -48,12 +59,13 @@ export function MainScreen({ navigation }) {
       setArrayCoinBalance(updateInfo.coinBalance);
       setArrayTransactions(updateInfo.userTransactions.data);
 
-      const usdSum = [];
-      console.log(updateInfo.coinBalance);
+      const allCurrency = [];
+      const selectCurrency = await getUserData('selectCurrency');
       const filterArray = updateInfo.coinBalance.filter(coin => coin.status === true);
-      filterArray.forEach((a) => { usdSum.push(a.amountInUsd) });
-      const allMoney = usdSum.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-      setAllMoney(allMoney);
+      filterArray.forEach((a) => { allCurrency.push(a.priceBalanceInCurrency) });
+      const sum = allCurrency.reduce((accum, prev) => accum + +prev[selectCurrency], 0);
+      setCurentSymbol(symbol[selectCurrency]);
+      setAllMoney(sum);
     }
 
     updateUserInfo();
@@ -100,12 +112,12 @@ export function MainScreen({ navigation }) {
 
         <View style={style.maimRectangle}>
           <View style={style.totalBalance}>
-            <Text style={style.textTotalBalance}>{circumcisionNumber(allMoney)}$</Text>
+            <Text style={style.textTotalBalance}>{circumcisionNumber(allMoney)} {curenSymb}</Text>
           </View>
 
           <View style={style.whiteRectangle}>
             <View style={style.coinBalanceContainer}>
-              <Carusel array={arrayCoinBalance} navigation={navigation} />
+              <Carusel array={arrayCoinBalance} navigation={navigation} symbol={curenSymb}/>
             </View>
 
             <View style={style.transactionContainer}>
