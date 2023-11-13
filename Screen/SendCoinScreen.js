@@ -123,7 +123,7 @@ export function SendCoinScreen({ route, navigation }) {
         const hash = request.data.hash;
         navigation.navigate("SuccessfulTransactionScreen", { hash, transferAmount, transferAddress, coin, transferComission, coinCommission });
       } else {
-        showMyAlert(request.error);
+        showMyAlert(request.error.message);
         console.log('status error');
       }
     } catch (error) {
@@ -210,28 +210,31 @@ export function SendCoinScreen({ route, navigation }) {
                     {touched.address && errors.address && <Text style={{ color: 'red', fontWeight: '700', marginTop: 5 }}>{errors.address}</Text>}
                   </View>
 
-                  <View style={{ marginTop: 15, alignItems: 'center' }}>
-                    <TextInput
-                      style={style.amountInput}
-                      onBlur={handleBlur('amount')}
-                      value={values.amount}
-                      placeholder="Amount send"
-                      placeholderTextColor='#858383'
-                      keyboardType="numeric"
-                      onChangeText={(text) => {
-                        let cleanedNumber = text.replace(',', '.');
-                        if (cleanedNumber.charAt(0) === '.') {
-                          cleanedNumber = '0' + cleanedNumber;
-                        };
-                        const cleanedText = cleanedNumber.replace(/[^0-9.]/g, '');
-                        // Перевірка на кількість крапок (можливо, ви хочете обмежити тільки одну крапку)
-                        if (cleanedText.split('.').length <= 2) {
-                          setAmountSend(cleanedText);
-                          handleChange('amount')(cleanedText);
-                        }
-                      }}
-                    />
+                  <View style={style.amountInputContainer}>
+                    <View style={{ height: '100%', width: '100%', alignItems: 'center'}}>
+                      <TextInput
+                        style={style.amountInput}
+                        onBlur={handleBlur('amount')}
+                        value={values.amount}
+                        placeholder="Amount send"
+                        placeholderTextColor='#858383'
+                        keyboardType="numeric"
+                        onChangeText={(text) => {
+                          let cleanedNumber = text.replace(',', '.');
+                          if (cleanedNumber.charAt(0) === '.') {
+                            cleanedNumber = '0' + cleanedNumber;
+                          };
+                          const cleanedText = cleanedNumber.replace(/[^0-9.]/g, '');
+                          // Перевірка на кількість крапок (можливо, ви хочете обмежити тільки одну крапку)
+                          if (cleanedText.split('.').length <= 2) {
+                            setAmountSend(cleanedText);
+                            handleChange('amount')(cleanedText);
+                          }
+                        }}
+                      />
+                      {touched.amount && errors.amount && <Text style={{ color: 'red', fontWeight: '700', marginTop: 5 }}>{errors.amount}</Text>}
 
+                    </View>
                     <View style={style.buttMaxContainer}>
                       <TouchableOpacity
                         onPress={() => {
@@ -239,14 +242,12 @@ export function SendCoinScreen({ route, navigation }) {
                           setAmountSend(maxAmount)
                           handleChange('amount')(maxAmount.toString());
                         }}>
-                        <Text style={{ fontWeight: '800', marginTop: -29, color: 'white', fontSize: 16 }}>MAX</Text>
+                        <Text style={{ fontWeight: '800', color: 'white', fontSize: 16 }}>MAX</Text>
                       </TouchableOpacity>
                     </View>
-
-                    {touched.amount && errors.amount && <Text style={{ color: 'red', fontWeight: '700', marginTop: 5 }}>{errors.amount}</Text>}
                   </View>
 
-                  <View style={{ height: 100, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={{ height: 120, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                     <TouchableOpacity
                       style={style.sendCoinButton}
                       onPress={handleSubmit}>
@@ -401,9 +402,21 @@ const style = StyleSheet.create({
   },
 
   buttMaxContainer: {
-    height: 'auto',
-    width: '88%',
-    alignItems: 'flex-end'
+    height: 40,
+    width: 50,
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    right: '5%'
+
+  },
+
+  amountInputContainer: {
+    height: 40,
+    width: '100%',
+    marginTop: 15,
+    alignItems: 'center',
+    position: 'relative'
   }
 
 });
