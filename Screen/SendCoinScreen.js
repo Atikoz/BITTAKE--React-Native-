@@ -175,7 +175,7 @@ export function SendCoinScreen({ route, navigation }) {
 
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price:  {circumcisionUsd((priceInCurr * amountSend))}{symbol}</Text>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price: {circumcisionUsd((priceInCurr * amountSend))}{symbol}</Text>
                 </View>
               </View>
 
@@ -266,7 +266,7 @@ export function SendCoinScreen({ route, navigation }) {
               </View>
 
               <View style={{ paddingTop: 10, paddingLeft: 10 }}>
-                <Text style={style.infoTextStyle}>Minimal transfer amount:   {minimalTransferAmount} {coin.toUpperCase()}</Text>
+                <Text style={style.infoTextStyle}>Minimal transfer amount:  {minimalTransferAmount} {coin.toUpperCase()}</Text>
               </View>
             </View>
           </View>

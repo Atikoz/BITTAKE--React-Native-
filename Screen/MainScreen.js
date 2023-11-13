@@ -125,7 +125,7 @@ export function MainScreen({ navigation }) {
                 <Text style={{ fontSize: 20, fontWeight: '900' }}>Recent Transactions</Text>
               </View>
 
-              <ListTransactions array={arrayTransactions} />
+              <ListTransactions arrayTransactions={arrayTransactions} symbol={curenSymb} arrayCoinBalance={arrayCoinBalance}/>
 
             </View>
           </View>

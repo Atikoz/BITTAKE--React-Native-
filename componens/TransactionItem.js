@@ -13,10 +13,10 @@ const circumcisionAmount = (sum) => {
   return Math.trunc(sum * 1e5) / 1e5
 }
 
-const TransactionItem = ({hash, coin, amount, amountInUsd, date, type}) => {
-  const[formattedDate, setFormattedDate] = useState();
+const TransactionItem = ({ hash, coin, amount, date, type, symbol, priceInCurrency, selectCurr }) => {
+  const [formattedDate, setFormattedDate] = useState();
 
-  useEffect( () => {
+  useEffect(() => {
     const unixDate = new Date(date * 1000);
     const formateDate = format(unixDate, 'HH:mm dd.MM.yyyy');
     setFormattedDate(formateDate);
@@ -25,10 +25,10 @@ const TransactionItem = ({hash, coin, amount, amountInUsd, date, type}) => {
   return (
     <View style={style.container}>
       <View style={style.icon}>
-        <Image 
-        source={type === 'send' ? sendIcon : getIcon}
-        style={{ width: 40, height: 40 }}
-        resizeMode="contain"
+        <Image
+          source={type === 'send' ? sendIcon : getIcon}
+          style={{ width: 40, height: 40 }}
+          resizeMode="contain"
         />
       </View>
 
@@ -41,7 +41,7 @@ const TransactionItem = ({hash, coin, amount, amountInUsd, date, type}) => {
           </View>
 
           <View style={style.amountUsdtBox}>
-            <Text style={{ fontSize: 16, fontWeight: '600' }}>{circumcisionUsd(amountInUsd)}$</Text>
+            <Text style={{ fontSize: 16, fontWeight: '600' }}>{circumcisionUsd(priceInCurrency[coin] [selectCurr] * amount)}{symbol}</Text>
           </View>
         </View>
 
@@ -85,14 +85,14 @@ const style = StyleSheet.create({
     height: '50%',
     width: '100%',
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent: 'space-between'
   },
 
   botContant: {
     height: '50%',
     width: '100%',
     flexDirection: 'row',
-    justifyContent:'space-between'
+    justifyContent: 'space-between'
   },
 
   hashBox: {

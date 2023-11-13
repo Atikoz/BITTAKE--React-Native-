@@ -22,7 +22,7 @@ const Carusel = ({ array, navigation, symbol }) => {
   return (
     <ScrollView style={style.wrapper} horizontal={true} >
       <View style={style.container}>
-        {filterArray.map((data, index) => <ItemCoinBalance coin={data.coin} amount={data.amount} object={data.priceBalanceInCurrency} navigation={navigation} symbol={symbol} selectCurrency ={selectCurrency} key={index} />)}
+        {filterArray.map((data, index) => <ItemCoinBalance coin={data.coin} amount={data.amount} object={data.priceBalanceInCurrency} navigation={navigation} symbol={symbol} selectCurrency={selectCurrency} key={index} />)}
       </View>
     </ScrollView>
   )
