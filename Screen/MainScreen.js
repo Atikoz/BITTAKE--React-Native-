@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Linking, RefreshControl, ScrollView, StatusBar, SafeAreaView, Dimensions, Modal, Button } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Linking, RefreshControl, ScrollView, StatusBar, SafeAreaView, Dimensions, Platform } from 'react-native';
 import logo from '../assets/logo.png';
 import settingsIcon from '../assets/setings-icon.png';
 import Carusel from '../componens/CoinCarusel.js';
@@ -16,6 +16,7 @@ const symbol = {
 
 const infoUserInstance = new InfoUser();
 const { width, height } = Dimensions.get('window');
+
 
 export function MainScreen({ navigation }) {
   const [allMoney, setAllMoney] = useState([]);
@@ -117,7 +118,7 @@ export function MainScreen({ navigation }) {
 
           <View style={style.whiteRectangle}>
             <View style={style.coinBalanceContainer}>
-              <Carusel array={arrayCoinBalance} navigation={navigation} symbol={curenSymb}/>
+              <Carusel array={arrayCoinBalance} navigation={navigation} symbol={curenSymb} />
             </View>
 
             <View style={style.transactionContainer}>
@@ -125,7 +126,7 @@ export function MainScreen({ navigation }) {
                 <Text style={{ fontSize: 20, fontWeight: '900' }}>Recent Transactions</Text>
               </View>
 
-              <ListTransactions arrayTransactions={arrayTransactions} symbol={curenSymb} arrayCoinBalance={arrayCoinBalance}/>
+              <ListTransactions arrayTransactions={arrayTransactions} symbol={curenSymb} arrayCoinBalance={arrayCoinBalance} />
 
             </View>
           </View>
@@ -154,8 +155,15 @@ const style = StyleSheet.create({
   container: {
     backgroundColor: 'black',
     width: '100%',
-    height: height - 50,
-    flexDirection: 'column'
+    flexDirection: 'column',
+    ...Platform.select({
+      android: {
+        height: height,
+      },
+      ios: {
+        height: height - 50,
+      }
+    }),
   },
 
   statusBar: {
