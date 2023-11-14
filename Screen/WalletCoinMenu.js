@@ -209,14 +209,14 @@ const style = StyleSheet.create({
     height: 80,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'center',
   },
 
   copyButtonContainer: {
     height: 90,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'flex-start'
   },
 
   copyButton: {
@@ -249,10 +249,10 @@ const style = StyleSheet.create({
   },
 
   qrCodeContainer: {
-    height: 200,
+    height: 220,
     width: '100%',
     paddingTop: 10,
-    alignItems: 'center'
+    alignItems: 'center',
 },
 
   sendCoinContainer: {
@@ -270,7 +270,7 @@ const style = StyleSheet.create({
   },
 
   footerRectangle: {
-    height: 140,
+    height: 120,
     width: '100%',
     backgroundColor: 'black',
     borderTopRightRadius: 50,

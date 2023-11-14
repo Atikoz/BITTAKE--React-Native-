@@ -52,7 +52,6 @@ export function SettingsScreen({ navigation }) {
   useEffect(() => {
     const giveSelectedCurrency = async () => {
       const currenciesSelected = await getUserData('selectCurrency');
-      console.log('selected currency', currenciesSelected);
       onCurrencySelect(currenciesSelected);
     };
 
@@ -64,7 +63,6 @@ export function SettingsScreen({ navigation }) {
     async function getCurrencyList() {
       const currencyList = await infoUserInstance.GetCurrencyList(userToken);
       setCurrencies(currencyList);
-      console.log(currencyList);
     };
 
     getCurrencyList();

@@ -154,7 +154,7 @@ const style = StyleSheet.create({
   container: {
     backgroundColor: 'black',
     width: '100%',
-    height: 800,
+    height: height - 50,
     flexDirection: 'column'
   },
 
