@@ -15,7 +15,7 @@ const symbol = {
 };
 
 const infoUserInstance = new InfoUser();
-const { width, height } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 
 export function MainScreen({ navigation }) {

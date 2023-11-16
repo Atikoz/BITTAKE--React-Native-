@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import NetInfo from '@react-native-community/netinfo';
 import RegisterFunction from '../function/functionReg.js';
-import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Alert, StatusBar, SafeAreaView } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput, Alert, StatusBar, SafeAreaView, Modal, Button } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import loginRectangle from '../assets/loginRectangle.png';
 import LocalData from '../function/funcionLocalData.js';
 
 const saveUserData = LocalData.saveUserData;
+const textBadNetwork = 'No Internet Connection...\nCheck your internet connection and try again.'
 
-
-export function LoginScreen ({ navigation }) {
+export function LoginScreen({ navigation }) {
   const [mnemonic, setMnemonic] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const showMyAlert = (textError) => {
     Alert.alert(
@@ -24,6 +26,10 @@ export function LoginScreen ({ navigation }) {
     );
   };
 
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   useEffect(() => {
     const saveDefoultCurrency = async () => {
       await saveUserData('selectCurrency', `usd`);
@@ -33,58 +39,82 @@ export function LoginScreen ({ navigation }) {
 
   }, []);
 
+  const handlePress = async () => {
+    const netInfoState = await NetInfo.fetch();
 
-  return(
-    <SafeAreaView style={{backgroundColor: 'white'}}>
-    <View style={style.container}>
-      <StatusBar barStyle="black-content" backgroundColor="#ffffff"/>
-      <View style={style.navBar}>
-        <TouchableOpacity onPress={ () => {navigation.navigate("StartScreen")}}>
-          <Image
-            source={backButton}
-            style={style.backButton}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
+    if (!netInfoState.isConnected) {
+      setModalVisible(true);
+      return
+    }
 
-        <View style={style.loginTextContainer}>
-          <Text style={style.loginBarText}>Login</Text>
+    const response = await RegisterFunction.loginUser(mnemonic.trim());
+
+    if (response.status === 'OK') {
+      await LocalData.saveUserData('userMnemonic', mnemonic);
+      navigation.navigate("MainScreen");
+    } else {
+      showMyAlert(response.error);
+    }
+  }
+
+  return (
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <View style={style.container}>
+        <StatusBar barStyle="black-content" backgroundColor="#ffffff" />
+        <View style={style.navBar}>
+          <TouchableOpacity onPress={() => { navigation.navigate("StartScreen") }}>
+            <Image
+              source={backButton}
+              style={style.backButton}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+
+          <View style={style.loginTextContainer}>
+            <Text style={style.loginBarText}>Login</Text>
+          </View>
         </View>
+
+        <View style={style.loginRectangleContainer}>
+          <Image
+            source={loginRectangle}
+            style={style.loginRectangle}
+            resizeMode="contain"
+
+          />
+
+          <TextInput
+            style={style.mnemonicInput}
+            placeholder='Mnemonic'
+            placeholderTextColor='#FFFFFF'
+            multiline={true}
+            onChangeText={setMnemonic}
+          />
+
+          <TouchableOpacity
+            style={style.buttonLogin}
+            onPress={handlePress}>
+            <Text style={style.loginText}>LOGIN</Text>
+          </TouchableOpacity>
+
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={closeModal}>
+            <View style={style.modalContainer}>
+              <View style={style.modalContent}>
+                <Text style={{ fontSize: 16, fontWeight: 600, textAlign: 'center' }}>{textBadNetwork}</Text>
+                <View style={{ paddingTop: 10, alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
+                  <Button title="OK" onPress={closeModal} />
+                </View>
+              </View>
+            </View>
+          </Modal>
+
+        </View>
+
       </View>
-
-      <View style={style.loginRectangleContainer}>
-        <Image
-          source={loginRectangle}
-          style={style.loginRectangle}
-          resizeMode="contain"
-
-        />
-
-        <TextInput
-          style={style.mnemonicInput}
-          placeholder='Mnemonic'
-          placeholderTextColor='#FFFFFF'
-          multiline={true}
-          onChangeText={setMnemonic}
-        />
-
-        <TouchableOpacity
-          style={style.buttonLogin}
-          onPress={async () => {
-            const response = await RegisterFunction.loginUser(mnemonic.trim());
-            if (response.status === 'OK') {
-              await LocalData.saveUserData('userMnemonic', mnemonic);
-              navigation.navigate("MainScreen");
-            } else {
-              showMyAlert(response.error);
-            }
-          }}>
-          <Text style={style.loginText}>LOGIN</Text>
-        </TouchableOpacity>
-
-      </View>
-
-    </View>
     </SafeAreaView>
   )
 };
@@ -97,14 +127,14 @@ const style = StyleSheet.create({
   },
 
   statusBar: {
-    width:'auto',
+    width: 'auto',
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'black'
   },
 
-  navBar:{
+  navBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -112,16 +142,16 @@ const style = StyleSheet.create({
     padding: 10,
   },
 
-  backButton:{
+  backButton: {
     padding: 10
   },
 
-  loginText:{
+  loginText: {
     fontSize: 20,
     fontWeight: 'bold',
   },
 
-  loginBarText:{
+  loginBarText: {
     fontSize: 25,
     fontWeight: 'bold',
   },
@@ -171,4 +201,20 @@ const style = StyleSheet.create({
     padding: 20,
     paddingTop: 12
   },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+
+  modalContent: {
+    height: 135,
+    width: 350,
+    backgroundColor: '#e3e3e3',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  }
 });

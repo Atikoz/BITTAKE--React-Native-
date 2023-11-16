@@ -29,7 +29,7 @@ class RegisterFunction {
       return {
         status: "error",
         token: undefined,
-        error: undefined
+        error: 'No Internet Connection...\nCheck your internet connection and try again.'
       };
     }
   }

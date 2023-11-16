@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import RNPickerSelect from 'react-native-picker-select';
 import LocalData from '../function/funcionLocalData.js';
 import RBSheet from "react-native-raw-bottom-sheet";
 import InfoUser from '../function/functionGetInfoUser';

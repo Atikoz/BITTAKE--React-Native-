@@ -7,14 +7,13 @@ class LocalData {
       await AsyncStorage.setItem(`${nameData}`, JSON.stringify(data));
       console.log('data saved');
     } catch (error) {
+      console.error('save local data error: ' ,error);
     }
   };
 
   async getUserData(key) {
     try {
-
       const userData = await AsyncStorage.getItem(key);;
-  
       // Перевірка на null, оскільки AsyncStorage може повертати null, якщо дані не знайдено.
       if (userData !== null) {
         // Дані були знайдені та вони зазвичай представлені у вигляді рядка JSON, тому їх потрібно розпарсити
@@ -29,7 +28,7 @@ class LocalData {
     }
   };
 
-  async removeData (key) {
+  async removeData(key) {
     try {
       await AsyncStorage.removeItem(key);
     } catch (error) {

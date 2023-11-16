@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import RegisterFunction from '../function/functionReg.js';
 import BoxWordItem from '../componens/RegisterBoxWordItems';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, Platform, ActivityIndicator, SafeAreaView, StatusBar } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import { View, StyleSheet, Image, Text, TouchableOpacity, Clipboard, Alert, ActivityIndicator, SafeAreaView, StatusBar } from 'react-native';
 
 import backButton from '../assets/backButton.png';
 import Checkbox from '../componens/Checkbox';
@@ -9,13 +10,34 @@ import LocalData from '../function/funcionLocalData.js';
 
 const saveUserData = LocalData.saveUserData;
 
+let loadingText = 'Generete Mnemonic';
 
-export function RegistrationScreen ({ navigation }) {
+
+export function RegistrationScreen({ navigation }) {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(true);
   const [arrayMnemonic, setArrayMnemonic] = useState([]);
-  const [mnemonicPhrase, setMnemonicPhrase] =useState('');
-  
+  const [mnemonicPhrase, setMnemonicPhrase] = useState('');
+
+  // useEffect(() => {
+  //   const turnOffLoader = () => {
+  //     const timerId = setTimeout(() => {
+  //       setLoading(false);
+  //     }, 1000);
+  //     return () => clearTimeout(timerId);
+  //   }
+
+  //   async function fetchData() {
+  //     const mnemonicArray = await RegisterFunction.fetchMnemonic();
+  //     setArrayMnemonic(mnemonicArray);
+  //     turnOffLoader();
+  //   };
+
+  //   fetchData();
+
+  // }, []);
+
+
   useEffect(() => {
     const turnOffLoader = () => {
       const timerId = setTimeout(() => {
@@ -25,6 +47,17 @@ export function RegistrationScreen ({ navigation }) {
     }
 
     async function fetchData() {
+      // Перевірка доступності мережі
+      const netInfoState = await NetInfo.fetch();
+      if (!netInfoState.isConnected) {
+        // Повідомлення користувачеві про відсутність мережі
+        loadingText = 'No Internet Connection...\nCheck your internet connection and try again.'
+        // Alert.alert('No Internet Connection', 'Please check your internet connection and try again.');
+        setLoading(true);
+        return;
+      }
+
+      // Виклик API-запиту тільки при наявності мережі
       const mnemonicArray = await RegisterFunction.fetchMnemonic();
       setArrayMnemonic(mnemonicArray);
       turnOffLoader();
@@ -43,7 +76,7 @@ export function RegistrationScreen ({ navigation }) {
 
   }, []);
 
-  useEffect ( () => {
+  useEffect(() => {
     setMnemonicPhrase(arrayMnemonic.join(' '));
   }, [arrayMnemonic]);
 
@@ -63,13 +96,10 @@ export function RegistrationScreen ({ navigation }) {
     );
   };
 
-  const OS = Platform.OS;
-
-
   return (
-    
-    <SafeAreaView style={{backgroundColor: 'white'}}>
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff"/>
+
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
       {loading && (<View style={style.skreenLoaderContainer}>
         <View style={style.loaderTextContainer}>
@@ -78,7 +108,7 @@ export function RegistrationScreen ({ navigation }) {
             <ActivityIndicator size="large" color="#58FFAF" />
           </View>
 
-          <Text style={style.textLoader}>Generete Mnemonic</Text>
+          <Text style={style.textLoader}>{loadingText}</Text>
         </View>
       </View>)}
 
@@ -138,7 +168,7 @@ export function RegistrationScreen ({ navigation }) {
         </View>
       </View>)}
     </SafeAreaView>
- 
+
   )
 };
 
@@ -151,7 +181,7 @@ const style = StyleSheet.create({
   },
 
   statusBar: {
-    width:'auto',
+    width: 'auto',
     height: 45,
     justifyContent: 'center',
     alignItems: 'center',
@@ -166,7 +196,7 @@ const style = StyleSheet.create({
     padding: 10
   },
 
-  backButton:{
+  backButton: {
     padding: 10
   },
 
@@ -176,12 +206,12 @@ const style = StyleSheet.create({
     justifyContent: 'center',
   },
 
-  registerText:{
+  registerText: {
     fontSize: 25,
     fontWeight: '700',
   },
-  
-  footer:{
+
+  footer: {
     top: 30,
     flexDirection: 'row',
     justifyContent: 'space-between'
@@ -189,7 +219,7 @@ const style = StyleSheet.create({
 
   buttonCopy: {
     width: 80,
-    height:40,
+    height: 40,
     right: 16,
     backgroundColor: 'black',
     borderRadius: 10,
@@ -199,7 +229,7 @@ const style = StyleSheet.create({
 
   checkOut: {
     width: 220,
-    height:40,
+    height: 40,
     borderRadius: 10,
     left: 17,
     backgroundColor: '#58FFAF',
@@ -243,7 +273,7 @@ const style = StyleSheet.create({
 
   buttonNext: {
     width: 358,
-    height:40,
+    height: 40,
     backgroundColor: '#58FFAF',
     borderRadius: 10,
     justifyContent: 'center',
@@ -251,7 +281,7 @@ const style = StyleSheet.create({
   },
 
   textNext: {
-    fontWeight:'900'
+    fontWeight: '900'
   },
 
   skreenLoaderContainer: {
@@ -273,8 +303,9 @@ const style = StyleSheet.create({
     alignItems: 'center'
   },
 
-  textLoader:{
+  textLoader: {
     fontSize: 16,
-    fontWeight: '600'
+    fontWeight: '600',
+    textAlign: 'center'
   }
 });
