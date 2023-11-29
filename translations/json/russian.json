@@ -1,0 +1,20 @@
+{
+  "translation": {
+    "createAccount": "СОЗДАТЬ АККАУНТ",
+    "login": "ВОЙТИ",
+    "welcomText": "ПРИВЕТСТВУЕМ\nВ CRYPTO\nWALLET",
+    "badNetwork": "Нет подключения к Интернету...\nПроверьте подключение к Интернету и повторите попытку.",
+    "loadingText": "Генерация Mnemonic",
+    "alertNameMnemonicCopied": "Mnemonic скопирована",
+    "alertTextMnemonicCopied": "Вы можете начать процедуру авторизации!",
+    "alertButtonMnemonicCopied": "Продолжить",
+    "textBarRegistration": "Генерация Mnemonic",
+    "savePhrase": "Я СОХРАНИЛ ФРАЗУ",
+    "copy": "Копировать",
+
+    "recentTransactions": "Недавние Транзакции",
+    "noTransactionsFound": "Нет транзакций",
+    "buy": "Купить",
+    "sell": "Продать"
+  }
+}

@@ -7,12 +7,19 @@ import backButton from '../assets/backButton.png';
 import loginRectangle from '../assets/loginRectangle.png';
 import LocalData from '../function/funcionLocalData.js';
 
+import { useTranslation } from 'react-i18next';
+import I18n from '../translations/I18n.js';
+
 const saveUserData = LocalData.saveUserData;
-const textBadNetwork = 'No Internet Connection...\nCheck your internet connection and try again.'
 
 export function LoginScreen({ navigation }) {
   const [mnemonic, setMnemonic] = useState();
   const [modalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    I18n.changeLanguage('ru');
+    return
+  }, []);
 
   const showMyAlert = (textError) => {
     Alert.alert(
@@ -57,6 +64,7 @@ export function LoginScreen({ navigation }) {
     }
   }
 
+  const translation = useTranslation().t;
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <View style={style.container}>
@@ -71,7 +79,7 @@ export function LoginScreen({ navigation }) {
           </TouchableOpacity>
 
           <View style={style.loginTextContainer}>
-            <Text style={style.loginBarText}>Login</Text>
+            <Text style={style.loginBarText}>{translation('login')}</Text>
           </View>
         </View>
 
@@ -94,7 +102,7 @@ export function LoginScreen({ navigation }) {
           <TouchableOpacity
             style={style.buttonLogin}
             onPress={handlePress}>
-            <Text style={style.loginText}>LOGIN</Text>
+            <Text style={style.loginText}>{translation('login')}</Text>
           </TouchableOpacity>
 
           <Modal
@@ -104,8 +112,8 @@ export function LoginScreen({ navigation }) {
             onRequestClose={closeModal}>
             <View style={style.modalContainer}>
               <View style={style.modalContent}>
-                <Text style={{ fontSize: 16, fontWeight: 600, textAlign: 'center' }}>{textBadNetwork}</Text>
-                <View style={{ paddingTop: 10, alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
+                <Text style={{ fontSize: 16, fontWeight: 600, textAlign: 'center' }}>{translation('badNetwork')}</Text>
+                <View style={{ paddingTop: 10, alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                   <Button title="OK" onPress={closeModal} />
                 </View>
               </View>

@@ -19,11 +19,13 @@ const getUserData = LocalData.getUserData;
 const removeLocalData = funcionLocalData.removeData;
 const infoUserInstance = new InfoUser();
 
+const nameLangs = ["ru", "en"];
 
 export function SettingsScreen({ navigation }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCurrency, onCurrencySelect] = useState([]);
+  const [langCurrency, onLangSelect] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [userToken, setUserToken] = useState([]);
   const [nameCurrencies, setNameCurrencies] = useState([]);
@@ -33,6 +35,12 @@ export function SettingsScreen({ navigation }) {
     await saveUserData('selectCurrency', `${currency}`)
     onCurrencySelect(currency);
     refRBSheet.current.close();
+  };
+
+  const handleLangSelect = async (lang) => {
+    await saveUserData('lang', `${lang}`)
+    onLangSelect(lang);
+    refRBSheetLanguage.current.close();
   };
 
   useEffect(() => {
@@ -58,6 +66,15 @@ export function SettingsScreen({ navigation }) {
   }, [])
 
   useEffect(() => {
+    const giveSelectedLang = async () => {
+      const langSelected = await getUserData('lang');
+      onLangSelect(langSelected);
+    };
+
+    giveSelectedLang();
+  }, [])
+
+  useEffect(() => {
 
     async function getCurrencyList() {
       const currencyList = await infoUserInstance.GetCurrencyList(userToken);
@@ -76,7 +93,7 @@ export function SettingsScreen({ navigation }) {
   }, [currencies])
 
   const refRBSheet = useRef();
-
+  const refRBSheetLanguage = useRef();
 
   const openModal = () => {
     setModalVisible(true);
@@ -207,9 +224,50 @@ export function SettingsScreen({ navigation }) {
               </View>
             </View>
 
-            <View>
-              <Text style={{ fontSize: 16, fontWeight: '600' }}>English</Text>
-            </View>
+            <TouchableOpacity onPress={() => {
+              refRBSheetLanguage.current.open()
+            }}>
+              <RBSheet
+                ref={refRBSheetLanguage}
+                closeOnDragDown={true}
+                closeOnPressMask={false}
+                customStyles={{
+                  wrapper: {
+                    backgroundColor: "transparent"
+                  },
+                  draggableIcon: {
+                    width: 50,
+                    backgroundColor: "white"
+                  },
+                  container: {
+                    backgroundColor: 'black',
+                    borderTopStartRadius: 40,
+                    borderTopEndRadius: 40
+                  }
+                }}
+              >
+
+                <View>
+                  <Text style={{ color: 'white', fontSize: 22, fontWeight: '900', textAlign: 'center' }}>
+                    Select Language
+                  </Text>
+                  {nameLangs.map((name) => (
+                    <TouchableOpacity
+                      key={name}
+                      onPress={() => handleLangSelect(name)}
+                      style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: 'white', alignItems: 'center' }}
+                    >
+                      <Text style={{ color: 'white', fontSize: 18 }}>{name.toUpperCase()}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+              </RBSheet>
+
+              <View>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>{langCurrency}</Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity onPress={openModal} style={style.itemLogout}>

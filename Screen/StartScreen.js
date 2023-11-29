@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { StyleSheet, Text, Image, View, TouchableOpacity, Animated, SafeAreaView, StatusBar, ActivityIndicator } from 'react-native';
 
 import logo from '../assets/logo.png';
 import backgroundImage from '../assets/diagram.png';
 import WhiteRectangle from '../assets/WhiteRectangle.png';
+
+import { useTranslation } from 'react-i18next';
+import I18n from '../translations/I18n.js';
+
 
 export function StartScreen({ navigation }) {
   const [isDiagramLoaded, setIsDiagramLoaded] = useState(false);
@@ -23,6 +27,11 @@ export function StartScreen({ navigation }) {
   };
 
   useEffect(() => {
+    I18n.changeLanguage('ru');
+    return
+  }, []);
+
+  useEffect(() => {
     if (isDiagramLoaded) {
       Animated.timing(translateDiagram, {
         toValue: 0, // Конечное значение translateY
@@ -32,7 +41,6 @@ export function StartScreen({ navigation }) {
     } else {
       return
     }
-
   }, [isDiagramLoaded])
 
   useEffect(() => {
@@ -64,6 +72,7 @@ export function StartScreen({ navigation }) {
 
   }, []);
 
+  const translation = useTranslation().t;
   return (
     <SafeAreaView style={{ backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
@@ -105,13 +114,13 @@ export function StartScreen({ navigation }) {
                   <TouchableOpacity
                     style={style.buttonRegister}
                     onPress={() => navigation.navigate("Registration")}>
-                    <Text style={style.registerButtonText}>CREATE ACCOUNT</Text>
+                    <Text style={style.registerButtonText}>{translation('createAccount')}</Text>
                   </TouchableOpacity>
 
                   <TouchableOpacity
                     style={style.buttonLogin}
                     onPress={() => navigation.navigate("Login")}>
-                    <Text style={style.loginButtonText}>LOGIN</Text>
+                    <Text style={style.loginButtonText}>{translation('login')}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -120,7 +129,7 @@ export function StartScreen({ navigation }) {
 
           <View style={style.textContainer}>
             <Animated.View style={{ transform: [{ translateX: translateText }] }}>
-              <Text style={style.welcomeText}>WELCOME{"\n"}TO CRYPTO{"\n"}WALLET</Text>
+              <Text style={style.welcomeText}>{translation('welcomText')}</Text>
             </Animated.View>
           </View>
         </View>

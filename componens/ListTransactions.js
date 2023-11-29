@@ -4,9 +4,16 @@ import TransactionItem from './TransactionItem.js';
 import funcionLocalData from '../function/funcionLocalData';
 const getUserData = funcionLocalData.getUserData;
 
+import { useTranslation } from 'react-i18next';
+import I18n from '../translations/I18n.js';
+
 const ListTransactions = ({ arrayTransactions, arrayCoinBalance, symbol }) => {
   const [selectCurrency, setSelectCurrency] = useState([]);
 
+  useEffect(() => {
+    I18n.changeLanguage('ru');
+    return
+  }, []);
 
   useEffect(() => {
     const getSelectCurrency = async () => {
@@ -30,9 +37,10 @@ const ListTransactions = ({ arrayTransactions, arrayCoinBalance, symbol }) => {
     }
   }
 
+  const translation = useTranslation().t;
   return (
     <ScrollView style={style.wrapper} horizontal={false} >
-      {arrayTransactions.length === 0 ? (<View style={{ paddingTop: 20, alignItems: 'center' }}><Text style={{ fontSize: 18, fontWeight: '600' }}>No transactions found</Text></View>) : (
+      {arrayTransactions.length === 0 ? (<View style={{ paddingTop: 20, alignItems: 'center' }}><Text style={{ fontSize: 18, fontWeight: '600' }}>{translation("noTransactionsFound")}</Text></View>) : (
         <View style={style.container}>
           {arrayTransactions.map((data, index) => <TransactionItem
             hash={data.hash}

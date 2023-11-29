@@ -1,0 +1,21 @@
+{
+  "translation": {
+    "createAccount": "CREATE ACCOUNT",
+    "login": "LOGIN",
+    "welcomText": "WELCOME\nTO CRYPTO\nWALLET",
+    "badNetwork": "No Internet Connection...\nCheck your internet connection and try again.",
+
+    "loadingText": "Generete Mnemonic",
+    "alertNameMnemonicCopied": "Mnemonic copied",
+    "alertTextMnemonicCopied": "You can begin the authorization procedure!",
+    "alertButtonMnemonicCopied": "Continue",
+    "textBarRegistration": "Mnemonic Generation",
+    "savePhrase": "I SAVED THE PHRASE",
+    "copy": "COPY",
+
+    "recentTransactions": "Recent Transactions",
+    "noTransactionsFound": "No transactions found",
+    "buy": "BUY",
+    "sell": "SELL"
+  }
+}

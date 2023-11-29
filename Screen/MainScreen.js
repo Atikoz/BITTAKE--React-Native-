@@ -8,6 +8,9 @@ import ListTransactions from '../componens/ListTransactions';
 import funcionLocalData from '../function/funcionLocalData';
 const getUserData = funcionLocalData.getUserData;
 
+import { useTranslation } from 'react-i18next';
+import I18n from '../translations/I18n.js';
+
 const symbol = {
   usd: '$',
   eur: '€',
@@ -28,6 +31,15 @@ export function MainScreen({ navigation }) {
   const circumcisionNumber = (sum) => {
     return Math.trunc(sum * 1e2) / 1e2
   }
+
+  useEffect(() => {
+    const giveSelectedLang = async () => {
+      const langSelected = await getUserData('lang');
+      console.log(langSelected);
+      I18n.changeLanguage(langSelected);
+    }
+    giveSelectedLang();
+  }, []);
 
   useEffect(() => {
     async function updateUserInfo() {
@@ -67,6 +79,10 @@ export function MainScreen({ navigation }) {
       const sum = allCurrency.reduce((accum, prev) => accum + +prev[selectCurrency], 0);
       setCurentSymbol(symbol[selectCurrency]);
       setAllMoney(sum);
+
+      // update lang
+      const langSelected = await getUserData('lang');
+      I18n.changeLanguage(langSelected);
     }
 
     updateUserInfo();
@@ -75,13 +91,13 @@ export function MainScreen({ navigation }) {
     }, 2000);
   }, []);
 
-
   const handlePress = () => {
     const url = 'https://www.bestchange.ru/?p=1293691';
 
     Linking.openURL(url).catch((err) => console.error('Не удалось открыть URL:', err));
   };
 
+  const translation = useTranslation().t;
 
   return (
     <SafeAreaView style={{ backgroundColor: 'black' }}>
@@ -123,7 +139,7 @@ export function MainScreen({ navigation }) {
 
             <View style={style.transactionContainer}>
               <View style={{ left: 25, justifyContent: 'center' }}>
-                <Text style={{ fontSize: 20, fontWeight: '900' }}>Recent Transactions</Text>
+                <Text style={{ fontSize: 20, fontWeight: '900' }}>{translation("recentTransactions")}</Text>
               </View>
 
               <ListTransactions arrayTransactions={arrayTransactions} symbol={curenSymb} arrayCoinBalance={arrayCoinBalance} />
@@ -135,13 +151,13 @@ export function MainScreen({ navigation }) {
             <TouchableOpacity
               style={{ height: 50, width: 150, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginLeft: 25 }}
               onPress={handlePress}>
-              <Text style={{ fontWeight: '900', fontSize: 16 }}>BUY</Text>
+              <Text style={{ fontWeight: '900', fontSize: 16 }}>{translation("buy")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={{ height: 50, width: 150, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', borderRadius: 10, marginRight: 25 }}
               onPress={handlePress}>
-              <Text style={{ fontWeight: '900', fontSize: 16, color: 'white' }}>SELL</Text>
+              <Text style={{ fontWeight: '900', fontSize: 16, color: 'white' }}>{translation("sell")}</Text>
             </TouchableOpacity>
           </View>
 

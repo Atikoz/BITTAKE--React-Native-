@@ -8,6 +8,9 @@ import backButton from '../assets/backButton.png';
 import Checkbox from '../componens/Checkbox';
 import LocalData from '../function/funcionLocalData.js';
 
+import { useTranslation } from 'react-i18next';
+import I18n from '../translations/I18n.js';
+
 const saveUserData = LocalData.saveUserData;
 
 let loadingText = 'Generete Mnemonic';
@@ -37,6 +40,11 @@ export function RegistrationScreen({ navigation }) {
 
   // }, []);
 
+
+  useEffect(() => {
+    I18n.changeLanguage('en');
+    return
+  }, []);
 
   useEffect(() => {
     const turnOffLoader = () => {
@@ -84,13 +92,15 @@ export function RegistrationScreen({ navigation }) {
     Clipboard.setString(text);
   };
 
+  const translation = useTranslation().t;
+
   const showMyAlert = () => {
     Alert.alert(
-      'Mnemonic copied',
-      'You can begin the authorization procedure!',
+      translation("alertNameMnemonicCopied"),
+      translation("alertTextMnemonicCopied"),
       [
         {
-          text: 'Continue', // Текст кнопки
+          text: translation("alertButtonMnemonicCopied"), // Текст кнопки
         },
       ]
     );
@@ -123,7 +133,7 @@ export function RegistrationScreen({ navigation }) {
           </TouchableOpacity>
 
           <View style={style.registerTextContainer}>
-            <Text style={style.registerText}>Mnemonic Generation</Text>
+            <Text style={style.registerText}>{translation("textBarRegistration")}</Text>
           </View>
         </View >
 
@@ -135,7 +145,7 @@ export function RegistrationScreen({ navigation }) {
           <TouchableOpacity
             onPress={() => { setChecked(!checked) }}
             style={style.checkOut}>
-            <Text style={style.saveText}>I SAVED THE PHRASE</Text>
+            <Text style={style.saveText}>{translation("savePhrase")}</Text>
             <View style={{ right: 6 }}>
               <Checkbox
                 checked={checked}
@@ -153,7 +163,7 @@ export function RegistrationScreen({ navigation }) {
           }}
           >
             <View style={style.buttonCopy}>
-              <Text style={style.copyText}>COPY</Text>
+              <Text style={style.copyText}>{translation("copy")}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -161,7 +171,7 @@ export function RegistrationScreen({ navigation }) {
         <View style={style.botBox}>
           <TouchableOpacity onPress={() => { checked ? navigation.navigate("Login") : undefined }}>
             <View style={style.buttonNext}>
-              <Text style={style.textNext}>NEXT</Text>
+              <Text style={style.textNext}>{translation("alertButtonMnemonicCopied")}</Text>
             </View>
           </TouchableOpacity>
 
@@ -218,7 +228,7 @@ const style = StyleSheet.create({
   },
 
   buttonCopy: {
-    width: 80,
+    width: 100,
     height: 40,
     right: 16,
     backgroundColor: 'black',
