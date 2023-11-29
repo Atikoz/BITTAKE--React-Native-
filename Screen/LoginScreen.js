@@ -16,11 +16,6 @@ export function LoginScreen({ navigation }) {
   const [mnemonic, setMnemonic] = useState();
   const [modalVisible, setModalVisible] = useState(false);
 
-  useEffect(() => {
-    I18n.changeLanguage('ru');
-    return
-  }, []);
-
   const showMyAlert = (textError) => {
     Alert.alert(
       'Error',

@@ -27,11 +27,6 @@ export function StartScreen({ navigation }) {
   };
 
   useEffect(() => {
-    I18n.changeLanguage('ru');
-    return
-  }, []);
-
-  useEffect(() => {
     if (isDiagramLoaded) {
       Animated.timing(translateDiagram, {
         toValue: 0, // Конечное значение translateY

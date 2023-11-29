@@ -40,12 +40,6 @@ export function RegistrationScreen({ navigation }) {
 
   // }, []);
 
-
-  useEffect(() => {
-    I18n.changeLanguage('en');
-    return
-  }, []);
-
   useEffect(() => {
     const turnOffLoader = () => {
       const timerId = setTimeout(() => {
