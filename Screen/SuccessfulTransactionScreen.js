@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Clipboard, StatusBar, SafeAreaView } from 'react-native';
 
+import { useTranslation } from 'react-i18next';
+
 import successfullIcon from '../assets/succesfull-icon.png';
 import logo from '../assets/black-logo.png'
 
 
 export function SuccessfulTransactionScreen ({ route, navigation}) {
   const { hash, transferAmount, transferAddress, coin, transferComission, coinCommission} = route.params;
+
+  const translation = useTranslation().t;
+
 
   const copyToClipboard = (text) => {
     Clipboard.setString(text);
@@ -39,7 +44,7 @@ export function SuccessfulTransactionScreen ({ route, navigation}) {
 
               <View style={{alignItems: 'flex-end'}}>
                 <TouchableOpacity style={style.copyButton} onPress={ () => {copyToClipboard(hash)}}>
-                  <Text style={{color: 'white', fontWeight: '900'}}>COPY</Text>
+                  <Text style={{color: 'white', fontWeight: '900'}}>{translation('copy')}</Text>
                 </TouchableOpacity>
               </View>
           </View>
@@ -47,7 +52,7 @@ export function SuccessfulTransactionScreen ({ route, navigation}) {
 
         <View style={style.addressSendContainer}>
           <View style={style.transferAddress}>
-            <Text style={style.textStyle}>Address Send:</Text>
+            <Text style={style.textStyle}>{translation('addressSend')}:</Text>
             <Text style={style.textStyle}>{transferAddress}</Text>
           </View>
         </View>
@@ -55,12 +60,12 @@ export function SuccessfulTransactionScreen ({ route, navigation}) {
         <View style={style.addressSendContainer}>
           <View style={style.transferAddress}>
             <View style={{flexDirection: 'row', justifyContent: 'space-between', height: '50%', alignItems: 'center'}}>
-              <Text style={style.textStyle}>Amount Send:</Text>
+              <Text style={style.textStyle}>{translation('amountSend')}:</Text>
               <Text style={style.textStyle}> {transferAmount} {coin.toUpperCase()}</Text>
             </View>
 
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', height: '50%'}}>
-              <Text style={style.textStyle}>Comission Send:</Text>
+              <Text style={style.textStyle}>{translation('comissionSend')}:</Text>
               <Text style={style.textStyle}> {transferComission} {coinCommission.toUpperCase()}</Text>
             </View>
           </View>

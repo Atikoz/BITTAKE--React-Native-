@@ -11,8 +11,16 @@ const ListTransactions = ({ arrayTransactions, arrayCoinBalance, symbol }) => {
   const [selectCurrency, setSelectCurrency] = useState([]);
 
   useEffect(() => {
-    I18n.changeLanguage('ru');
-    return
+    const changeLanguage = async () => {
+      const selectLang = await getUserData("lang");
+      if (selectLang === 'user not found') {
+        I18n.changeLanguage('eng');
+      } else {
+        I18n.changeLanguage(`${selectLang}`);
+      }
+    }
+
+    changeLanguage();
   }, []);
 
   useEffect(() => {

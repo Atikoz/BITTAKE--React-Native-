@@ -1,13 +1,5 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import funcionLocalData from '../function/funcionLocalData';
-const getUserData = funcionLocalData.getUserData;
-
-const symbol = {
-  usd: '$',
-  eur: '€',
-  rub: '₽'
-};
 
 const circumcisionCurrency = (sum) => {
   return Math.trunc(sum * 1e2) / 1e2

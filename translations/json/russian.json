@@ -7,14 +7,53 @@
     "loadingText": "Генерация Mnemonic",
     "alertNameMnemonicCopied": "Mnemonic скопирована",
     "alertTextMnemonicCopied": "Вы можете начать процедуру авторизации!",
-    "alertButtonMnemonicCopied": "Продолжить",
+    "continueButton": "Продолжить",
     "textBarRegistration": "Генерация Mnemonic",
     "savePhrase": "Я СОХРАНИЛ ФРАЗУ",
     "copy": "Копировать",
 
-    "recentTransactions": "Недавние Транзакции",
+    "recentTransactions": "Недавние транзакции",
     "noTransactionsFound": "Нет транзакций",
     "buy": "Купить",
-    "sell": "Продать"
+    "sell": "Продать",
+
+    "sendCoin": "ОТПРАВИТЬ",
+
+    "wallet": "Кошелек",
+    "replenishBalanceInstructions": "Для пополнения баланса переведите на этот счет желаемую сумму пополнения.",
+    "minimumReplenishmentAmount": "Минимальная сумма пополнения",
+    "copyAddress": "КОПИРОВАТЬ АДРЕСС",
+
+
+    "headSend": "Отправить",
+    "alertAddressCopied": "Адресс скопирован",
+    "continueOperationMessage": "Вы можете продолжить свою операцию.",
+    "walletAddress": "Адресс кошелька",
+    "amountSend": "Сумма первода",
+    "requiredField": "Обязательное поле",
+    "walletValidation": "Вы не можете перевести средства на свой адрес",
+    "minimumTransferErr": "Сумма перевода ниже минимальной",
+    "insufficientFundsOnBalance": "Недостаточно средств на балансе",
+    "price": "Стоимость",
+    "commisionTransfer": "Комиссия перевода",
+    "network": "Сеть",
+    "minimalTransferAmount": "Мин. сумма перевода",
+
+    "settings": "Настройки",
+    "currency": "Валюта",
+    "lang": "Язык",
+    "logout": "Выйти из аккаунта",
+    "socialNetwork": "Социальные сети",
+    "logoutConfirmationMessage": "Вы уверены, что хотите выйти из своей учетной записи?",
+    "logoutContinue": "Продолжить",
+    "logoutCancel": "Отмена",
+
+    "addressSend": "Адресс получателя",
+    "comissionSend": "Комиссия перевода"
+
+
+
+
+
   }
 }

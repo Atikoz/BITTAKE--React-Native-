@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import LocalData from '../function/funcionLocalData.js';
 import RBSheet from "react-native-raw-bottom-sheet";
 import InfoUser from '../function/functionGetInfoUser';
+import { useTranslation } from 'react-i18next';
 
 import { View, StyleSheet, Image, Text, TouchableOpacity, StatusBar, SafeAreaView, Modal, Linking, Button } from 'react-native';
 
@@ -19,16 +20,18 @@ const getUserData = LocalData.getUserData;
 const removeLocalData = funcionLocalData.removeData;
 const infoUserInstance = new InfoUser();
 
-const nameLangs = ["ru", "en"];
+const nameLangs = ["ru", "eng"];
 
 export function SettingsScreen({ navigation }) {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedCurrency, onCurrencySelect] = useState([]);
-  const [langCurrency, onLangSelect] = useState([]);
+  const [selectLang, onLangSelect] = useState([]);
   const [currencies, setCurrencies] = useState([]);
   const [userToken, setUserToken] = useState([]);
   const [nameCurrencies, setNameCurrencies] = useState([]);
+
+  const translation = useTranslation().t;
 
 
   const handleCurrencySelect = async (currency) => {
@@ -68,7 +71,11 @@ export function SettingsScreen({ navigation }) {
   useEffect(() => {
     const giveSelectedLang = async () => {
       const langSelected = await getUserData('lang');
-      onLangSelect(langSelected);
+      if (langSelected === 'user not found') {
+        onLangSelect('eng');
+      } else {
+        onLangSelect(langSelected);
+      }
     };
 
     giveSelectedLang();
@@ -142,8 +149,15 @@ export function SettingsScreen({ navigation }) {
           </TouchableOpacity>
 
           <View style={style.headerText}>
-            <Text style={{ fontWeight: '900', fontSize: 16 }}>Settings</Text>
+            <Text style={{ fontWeight: '900', fontSize: 16 }}>{translation('settings')}</Text>
           </View>
+
+          <View
+            style={{ height: 50, width: 50 }}
+          >
+
+          </View>
+
         </View>
 
         <View style={style.settingsContain}>
@@ -158,7 +172,7 @@ export function SettingsScreen({ navigation }) {
               </View>
 
               <View style={{ paddingLeft: 5 }}>
-                <Text style={{ fontSize: 16, fontWeight: '600' }}>Currency</Text>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>{translation('currency')}</Text>
               </View>
             </View>
 
@@ -220,7 +234,7 @@ export function SettingsScreen({ navigation }) {
               </View>
 
               <View style={{ paddingLeft: 5 }}>
-                <Text style={{ fontSize: 16, fontWeight: '600' }}>Language</Text>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>{translation('lang')}</Text>
               </View>
             </View>
 
@@ -255,7 +269,7 @@ export function SettingsScreen({ navigation }) {
                     <TouchableOpacity
                       key={name}
                       onPress={() => handleLangSelect(name)}
-                      style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: 'white', alignItems: 'center' }}
+                      style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: 'white', alignItems: 'center', justifyContent: 'center' }}
                     >
                       <Text style={{ color: 'white', fontSize: 18 }}>{name.toUpperCase()}</Text>
                     </TouchableOpacity>
@@ -265,7 +279,7 @@ export function SettingsScreen({ navigation }) {
               </RBSheet>
 
               <View>
-                <Text style={{ fontSize: 16, fontWeight: '600' }}>{langCurrency}</Text>
+                <Text style={{ fontSize: 16, fontWeight: '600' }}>{selectLang}</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -286,17 +300,17 @@ export function SettingsScreen({ navigation }) {
               onRequestClose={closeModal}>
               <View style={style.modalContainer}>
                 <View style={style.modalContent}>
-                  <Text style={{ fontSize: 16, fontWeight: 600, textAlign: 'center' }}>Are you sure you want to log out of your account?</Text>
+                  <Text style={{ fontSize: 16, fontWeight: 600, textAlign: 'center' }}>{translation('logoutConfirmationMessage')}</Text>
                   <View style={{ paddingTop: 10, flexDirection: 'row', justifyContent: 'space-between', width: '75%' }}>
-                    <Button title="Continue" onPress={handleConfirmLogout} />
-                    <Button title="Cancel" onPress={closeModal} />
+                    <Button title={translation('logoutContinue')} onPress={handleConfirmLogout} />
+                    <Button title={translation('logoutCancel')} onPress={closeModal} />
                   </View>
                 </View>
               </View>
             </Modal>
 
             <View>
-              <Text style={{ fontSize: 16, fontWeight: '600' }}>Logout</Text>
+              <Text style={{ fontSize: 16, fontWeight: '600' }}>{translation('logout')}</Text>
             </View>
           </TouchableOpacity>
 
@@ -304,7 +318,7 @@ export function SettingsScreen({ navigation }) {
 
         <View style={style.socialNetwork}>
           <View style={style.textContainer}>
-            <Text style={{ fontSize: 16, fontWeight: '900' }}>Social Network</Text>
+            <Text style={{ fontSize: 16, fontWeight: '900' }}>{translation('socialNetwork')}</Text>
           </View>
 
           <TouchableOpacity onPress={handlePressTelegram} style={style.socItem}>
@@ -364,10 +378,10 @@ const style = StyleSheet.create({
   },
 
   headerText: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'center',
     height: '100%',
-    width: '55%'
+    width: '55%',
   },
 
   settingsContain: {

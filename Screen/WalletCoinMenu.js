@@ -3,6 +3,7 @@ import QRCode from 'react-native-qrcode-svg';
 
 import InfoUser from '../function/functionGetInfoUser';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Clipboard, Alert, StatusBar, SafeAreaView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import backButton from '../assets/backButton.png';
 const infoUserInstance = new InfoUser();
@@ -22,6 +23,8 @@ export function WalletCoinMenuScreen({ route, navigation }) {
   const [userBalance, setUserBalance] = useState([]);
   const [networkCoin, setNetworkCoin] = useState([]);
   const [minimalReplenishment, setMinimalReplenishment] = useState([]);
+  const translation = useTranslation().t;
+
 
   useEffect(() => {
 
@@ -58,11 +61,11 @@ export function WalletCoinMenuScreen({ route, navigation }) {
 
   const showMyAlert = () => {
     Alert.alert(
-      'Address copied',
-      'You can continue your operation!', //Текст сообщения
+      `${translation('alertAddressCopied')}`,
+      `${translation('continueOperationMessage')}`, //Текст сообщения
       [
         {
-          text: 'Continue', // Текст кнопки
+          text: translation('continueButton'), // Текст кнопки
         },
       ]
     );
@@ -89,7 +92,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
           </View>
 
           <View style={style.headerText}>
-            <Text style={{ fontSize: 18, fontWeight: '900' }}>{coin.toUpperCase()} Wallet</Text>
+            <Text style={{ fontSize: 18, fontWeight: '900' }}>{coin.toUpperCase()} {translation('wallet')}</Text>
           </View>
         </View>
 
@@ -107,7 +110,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
 
         <View style={style.receiptInformation}>
             <View style={style.receiptInformationRectangle}>
-              <Text style={style.infoText}>To replenish your balance, transfer the desired replenishment amount to this account.</Text>
+              <Text style={style.infoText}>{translation('replenishBalanceInstructions')}</Text>
             </View>
           </View>
 
@@ -120,8 +123,8 @@ export function WalletCoinMenuScreen({ route, navigation }) {
             <Text style={{ fontSize: 13, fontWeight: '900' }}>{userWallet}</Text>
 
             <View style={{alignItems: 'center', paddingTop: 10}}>
-              <Text style={{ fontSize: 13, fontWeight: '900' }}>Minimal Replenishment: {circumcisionAmount(minimalReplenishment)} {coin.toUpperCase()}</Text>
-              <Text style={{ paddingTop: 4, fontSize: 13, fontWeight: '900' }}>Network: {networkCoin}</Text>
+              <Text style={{ fontSize: 13, fontWeight: '900' }}>{translation('minimumReplenishmentAmount')}: {circumcisionAmount(minimalReplenishment)} {coin.toUpperCase()}</Text>
+              <Text style={{ paddingTop: 4, fontSize: 13, fontWeight: '900' }}>{translation('network')}: {networkCoin}</Text>
 
             </View>
           </View>
@@ -134,7 +137,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
                 showMyAlert();
               }}
             >
-              <Text style={{ fontSize: 17, fontWeight: '900' }}>COPY ADDRESS</Text>
+              <Text style={{ fontSize: 17, fontWeight: '900', textAlign: 'center' }}>{translation('copyAddress')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -145,7 +148,7 @@ export function WalletCoinMenuScreen({ route, navigation }) {
               style={style.sendCoinButton}
               onPress={ () => {navigation.navigate("SendCoinScreen", { coin, object, symbol, selectCurrency })}}
             >
-              <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
+              <Text style={{ fontSize: 17, fontWeight: '900' }}>{translation('sendCoin')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -245,7 +248,8 @@ const style = StyleSheet.create({
     padding: 15,
     color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: '600'
+    fontWeight: '600',
+    textAlign: 'center'
   },
 
   qrCodeContainer: {

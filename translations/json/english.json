@@ -8,14 +8,49 @@
     "loadingText": "Generete Mnemonic",
     "alertNameMnemonicCopied": "Mnemonic copied",
     "alertTextMnemonicCopied": "You can begin the authorization procedure!",
-    "alertButtonMnemonicCopied": "Continue",
+    "continueButton": "Continue",
     "textBarRegistration": "Mnemonic Generation",
     "savePhrase": "I SAVED THE PHRASE",
     "copy": "COPY",
 
-    "recentTransactions": "Recent Transactions",
+    "recentTransactions": "Recent transactions",
     "noTransactionsFound": "No transactions found",
     "buy": "BUY",
-    "sell": "SELL"
+    "sell": "SELL",
+
+    "sendCoin": "SEND COIN",
+
+    "wallet": "Wallet",
+    "replenishBalanceInstructions": "To replenish your balance, transfer the desired replenishment amount to this account.",
+    "minimumReplenishmentAmount": "Minimum replenishment amount",
+    "copyAddress": "COPY ADDRESS",
+
+    "headSend": "Send",
+    "alertAddressCopied": "Address copied",
+    "continueOperationMessage": "You can continue your operation.",
+    "walletAddress": "Wallet address",
+    "amountSend": "Amount send",
+    "requiredField": "Required field",
+    "walletValidation": "You cannot transfer funds to your address!",
+    "minimumTransferErr": "Transfer amount is below the minimum!",
+    "insufficientFundsOnBalance": "Insufficient funds on balance",
+    "price": "Price",
+    "commisionTransfer": "Commision transfer",
+    "network": "Network",
+    "minimalTransferAmount": "Minimal transfer amount",
+
+    "settings": "Settings",
+    "currency": "Currency",
+    "lang": "Language",
+    "logout": "Logout",
+    "socialNetwork": "Social Network",
+    "logoutConfirmationMessage": "Are you sure you want to log out of your account?",
+    "logoutContinue": "Continue",
+    "logoutCancel": "Cancel",
+
+    "addressSend": "Address Send",
+    "comissionSend": "Comission Send"
+
+
   }
 }

@@ -22,24 +22,6 @@ export function RegistrationScreen({ navigation }) {
   const [arrayMnemonic, setArrayMnemonic] = useState([]);
   const [mnemonicPhrase, setMnemonicPhrase] = useState('');
 
-  // useEffect(() => {
-  //   const turnOffLoader = () => {
-  //     const timerId = setTimeout(() => {
-  //       setLoading(false);
-  //     }, 1000);
-  //     return () => clearTimeout(timerId);
-  //   }
-
-  //   async function fetchData() {
-  //     const mnemonicArray = await RegisterFunction.fetchMnemonic();
-  //     setArrayMnemonic(mnemonicArray);
-  //     turnOffLoader();
-  //   };
-
-  //   fetchData();
-
-  // }, []);
-
   useEffect(() => {
     const turnOffLoader = () => {
       const timerId = setTimeout(() => {
@@ -53,7 +35,7 @@ export function RegistrationScreen({ navigation }) {
       const netInfoState = await NetInfo.fetch();
       if (!netInfoState.isConnected) {
         // Повідомлення користувачеві про відсутність мережі
-        loadingText = 'No Internet Connection...\nCheck your internet connection and try again.'
+        loadingText = translation('badNetwork')
         // Alert.alert('No Internet Connection', 'Please check your internet connection and try again.');
         setLoading(true);
         return;
@@ -94,7 +76,7 @@ export function RegistrationScreen({ navigation }) {
       translation("alertTextMnemonicCopied"),
       [
         {
-          text: translation("alertButtonMnemonicCopied"), // Текст кнопки
+          text: translation("continueButton"), // Текст кнопки
         },
       ]
     );
@@ -165,7 +147,7 @@ export function RegistrationScreen({ navigation }) {
         <View style={style.botBox}>
           <TouchableOpacity onPress={() => { checked ? navigation.navigate("Login") : undefined }}>
             <View style={style.buttonNext}>
-              <Text style={style.textNext}>{translation("alertButtonMnemonicCopied")}</Text>
+              <Text style={style.textNext}>{translation("continueButton")}</Text>
             </View>
           </TouchableOpacity>
 

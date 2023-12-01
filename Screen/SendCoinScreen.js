@@ -6,6 +6,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, TextInput, TouchableWi
 
 import backButton from '../assets/backButton.png';
 import { SendCoin } from '../function/functionTransfer';
+import { useTranslation } from 'react-i18next';
+import I18n from '../translations/I18n.js';
 const infoUserInstance = new InfoUser();
 
 const circumcisionUsd = (sum) => {
@@ -16,17 +18,6 @@ const circumcisionAmount = (sum) => {
   return Math.trunc(sum * 1e5) / 1e5
 };
 
-const showMyAlert = (text) => {
-  Alert.alert(
-    'Error!',
-    `${text}`, //Текст сообщения
-    [
-      {
-        text: 'Continue', // Текст кнопки
-      },
-    ]
-  );
-};
 
 export function SendCoinScreen({ route, navigation }) {
   const { coin, object, symbol, selectCurrency } = route.params;
@@ -40,16 +31,30 @@ export function SendCoinScreen({ route, navigation }) {
   const [unixTimestamp, setUnixTimestamp] = useState([]);
   const [networkCoin, setNetworkCoin] = useState([]);
   const [minimalTransferAmount, setMinTransferAmount] = useState([]);
+  const translation = useTranslation().t;
+
 
   const validationSchema = yup.object().shape({
     address: yup.string()
-      .required('Required field')
-      .notOneOf([userWallet], 'You cannot transfer funds to your address!'),
+      .required(`${translation('requiredField')}`)
+      .notOneOf([userWallet], `${translation('walletValidation')}`),
     amount: yup.number()
-      .required('Required field')
-      .min(minimalTransferAmount, 'Transfer amount is below the minimum!')
-      .max(userBalance - transferComission, 'Insufficient funds on balance!')
+      .required(`${translation('requiredField')}`)
+      .min(minimalTransferAmount, `${translation('minimumTransferErr')}`)
+      .max(userBalance - transferComission, `${translation('insufficientFundsOnBalance')}`)
   });
+
+  const showMyAlert = (text) => {
+    Alert.alert(
+      'Error!',
+      `${text}`, //Текст сообщения
+      [
+        {
+          text: translation('continueButton'), // Текст кнопки
+        },
+      ]
+    );
+  };
 
   useEffect(() => {
     async function updateUserToken() {
@@ -157,7 +162,7 @@ export function SendCoinScreen({ route, navigation }) {
             </View>
 
             <View style={style.headerText}>
-              <Text style={{ fontSize: 18, fontWeight: '900' }}>Send {coin.toUpperCase()}</Text>
+              <Text style={{ fontSize: 18, fontWeight: '900' }}>{translation('headSend')} {coin.toUpperCase()}</Text>
             </View>
           </View>
 
@@ -175,13 +180,13 @@ export function SendCoinScreen({ route, navigation }) {
 
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Price: {circumcisionUsd((priceInCurr * amountSend))}{symbol}</Text>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>{translation('price')}: {circumcisionUsd((priceInCurr * amountSend))}{symbol}</Text>
                 </View>
               </View>
 
               <View style={style.topContent}>
                 <View style={{ padding: 8 }}>
-                  <Text style={{ fontSize: 19, fontWeight: '900' }}>Commision transfer: {circumcisionAmount(transferComission)} {coin.toUpperCase()}</Text>
+                  <Text style={{ fontSize: 19, fontWeight: '900' }}>{translation('commisionTransfer')}: {circumcisionAmount(transferComission)} {coin.toUpperCase()}</Text>
                 </View>
               </View>
             </View>
@@ -203,7 +208,7 @@ export function SendCoinScreen({ route, navigation }) {
                       }}
                       onBlur={handleBlur('address')}
                       value={values.address}
-                      placeholder="Wallet address"
+                      placeholder={translation('walletAddress')}
                       placeholderTextColor='#858383'
                       style={style.walletInput}
                     />
@@ -211,12 +216,12 @@ export function SendCoinScreen({ route, navigation }) {
                   </View>
 
                   <View style={style.amountInputContainer}>
-                    <View style={{ height: '100%', width: '100%', alignItems: 'center'}}>
+                    <View style={{ height: '100%', width: '100%', alignItems: 'center' }}>
                       <TextInput
                         style={style.amountInput}
                         onBlur={handleBlur('amount')}
                         value={values.amount}
-                        placeholder="Amount send"
+                        placeholder={translation('amountSend')}
                         placeholderTextColor='#858383'
                         keyboardType="numeric"
                         onChangeText={(text) => {
@@ -251,7 +256,7 @@ export function SendCoinScreen({ route, navigation }) {
                     <TouchableOpacity
                       style={style.sendCoinButton}
                       onPress={handleSubmit}>
-                      <Text style={{ fontSize: 17, fontWeight: '900' }}>SEND COIN</Text>
+                      <Text style={{ fontSize: 17, fontWeight: '900' }}>{translation('sendCoin')}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -262,11 +267,11 @@ export function SendCoinScreen({ route, navigation }) {
           <View style={style.infoRectangle}>
             <View style={style.blackRectangle}>
               <View style={{ paddingLeft: 10 }}>
-                <Text style={style.infoTextStyle}>Network:   {networkCoin}</Text>
+                <Text style={style.infoTextStyle}>{translation('network')}:   {networkCoin}</Text>
               </View>
 
               <View style={{ paddingTop: 10, paddingLeft: 10 }}>
-                <Text style={style.infoTextStyle}>Minimal transfer amount:  {minimalTransferAmount} {coin.toUpperCase()}</Text>
+                <Text style={style.infoTextStyle}>{translation('minimalTransferAmount')}:  {minimalTransferAmount} {coin.toUpperCase()}</Text>
               </View>
             </View>
           </View>

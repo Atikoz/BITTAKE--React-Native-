@@ -8,11 +8,11 @@ i18n
     .init({
         compatibilityJSON: 'v3',
         resources: {
-            en: english,
+            eng: english,
             ru: russian,
         },
-        lng: 'en', // язык по умолчанию
-        fallbackLng: 'en',
+        lng: 'eng', // язык по умолчанию
+        fallbackLng: 'eng',
         interpolation: {
             escapeValue: false,
         }
