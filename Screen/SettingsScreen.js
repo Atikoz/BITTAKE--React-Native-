@@ -36,13 +36,13 @@ export function SettingsScreen({ navigation }) {
 
   const handleCurrencySelect = async (currency) => {
     await saveUserData('selectCurrency', `${currency}`)
-    onCurrencySelect(currency);
+    onCurrencySelect(currency.toUpperCase());
     refRBSheet.current.close();
   };
 
   const handleLangSelect = async (lang) => {
     await saveUserData('lang', `${lang}`)
-    onLangSelect(lang);
+    onLangSelect(lang.toUpperCase());
     refRBSheetLanguage.current.close();
   };
 
@@ -62,7 +62,7 @@ export function SettingsScreen({ navigation }) {
   useEffect(() => {
     const giveSelectedCurrency = async () => {
       const currenciesSelected = await getUserData('selectCurrency');
-      onCurrencySelect(currenciesSelected);
+      onCurrencySelect(currenciesSelected.toUpperCase());
     };
 
     giveSelectedCurrency();
@@ -72,9 +72,9 @@ export function SettingsScreen({ navigation }) {
     const giveSelectedLang = async () => {
       const langSelected = await getUserData('lang');
       if (langSelected === 'user not found') {
-        onLangSelect('eng');
+        onLangSelect('ENG');
       } else {
-        onLangSelect(langSelected);
+        onLangSelect(langSelected.toUpperCase());
       }
     };
 
@@ -93,8 +93,7 @@ export function SettingsScreen({ navigation }) {
 
   useEffect(() => {
     const data = [];
-    currencies.map((n) => { data.push(n.name) });
-
+    currencies.map((n) => { data.push((n.name).toUpperCase()) });
     setNameCurrencies(data)
 
   }, [currencies])

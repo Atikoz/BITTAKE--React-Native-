@@ -8,6 +8,7 @@ import backButton from '../assets/backButton.png';
 import { SendCoin } from '../function/functionTransfer';
 import { useTranslation } from 'react-i18next';
 import I18n from '../translations/I18n.js';
+import LoadingModal from '../componens/LoadingModal.js';
 const infoUserInstance = new InfoUser();
 
 const circumcisionUsd = (sum) => {
@@ -21,6 +22,7 @@ const circumcisionAmount = (sum) => {
 
 export function SendCoinScreen({ route, navigation }) {
   const { coin, object, symbol, selectCurrency } = route.params;
+  const [visibleModal, setVisibleModal ] = useState(false);
   const [userToken, setUserToken] = useState([]);
   const [userWallet, setUserWallet] = useState([]);
   const [userBalance, setUserBalance] = useState([]);
@@ -121,13 +123,16 @@ export function SendCoinScreen({ route, navigation }) {
       const transferAmount = values.amount;
       const transferAddress = values.address;
       console.log('parametrs send:', coin, transferAmount, userToken, transferAddress, unixTimestamp);
+      setVisibleModal(true);
 
       const request = await SendCoin(coin, transferAmount, userToken, transferAddress, unixTimestamp);
       console.log(request);
       if (request && request.status === 'OK') {
+        setVisibleModal(false);
         const hash = request.data.hash;
         navigation.navigate("SuccessfulTransactionScreen", { hash, transferAmount, transferAddress, coin, transferComission, coinCommission });
       } else {
+        setVisibleModal(false);
         showMyAlert(request.error.message);
         console.log('status error');
       }
@@ -263,6 +268,8 @@ export function SendCoinScreen({ route, navigation }) {
               )}
             </Formik>
           </View>
+
+          <LoadingModal visible={visibleModal} />
 
           <View style={style.infoRectangle}>
             <View style={style.blackRectangle}>

@@ -49,7 +49,9 @@
     "logoutCancel": "Cancel",
 
     "addressSend": "Address Send",
-    "comissionSend": "Comission Send"
+    "comissionSend": "Comission Send",
+    "transferCoin": "Transfer coin..."
+
 
 
   }
